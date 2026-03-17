@@ -4,462 +4,1295 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>小手机</title>
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style id="custom-css-injection"></style>
-    <style>
-        /* Global Variables */
+    <style id="base-styles">
         :root {
-            --bg-color: #f5f5f7;
-            --text-color: #1d1d1f;
-            --text-secondary: #86868b;
-            --accent-color: #007aff;
-            --glass-bg: rgba(255, 255, 255, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.3);
-            --glass-blur: 20px;
-            --border-radius: 24px;
-            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --bg-color: #f5f5f5; /* 浅灰色背景 */
+            --app-bg: #ffffff;   /* 纯白色卡片/组件 */
+            --text-color: #333333;
+            --text-secondary: #888888;
+            --border-color: #e0e0e0;
+            --tag-bg: #f0f0f0;   /* 浅灰色信息栏 */
+            --glass-bg: rgba(255, 255, 255, 0.85);
+            --glass-blur: blur(20px);
+            --black: #000000;
+            --white: #ffffff;
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 30px;
+        }
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        body { background-color: #000; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; color: var(--text-color); }
+        
+        #app-container { width: 100%; height: 100%; max-width: 430px; background: var(--bg-color); position: relative; overflow: hidden; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        
+        /* Utility */
+        .hidden { display: none !important; }
+        .glass { background: var(--glass-bg); backdrop-filter: var(--glass-blur); -webkit-backdrop-filter: var(--glass-blur); }
+        
+        /* Lock Screen */
+        #lock-screen { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; background: var(--bg-color); padding: 30px; text-align: center; position: absolute; top: 0; left: 0; width: 100%; z-index: 9999; }
+        .pin-display { display: flex; gap: 16px; margin-bottom: 40px; }
+        .pin-dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid var(--text-color); }
+        .pin-dot.filled { background: var(--text-color); }
+        .keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 280px; margin: 0 auto; }
+        .key-btn { width: 70px; height: 70px; border-radius: 50%; background: var(--app-bg); border: 1px solid var(--border-color); display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: 500; color: var(--text-color); cursor: pointer; transition: background 0.1s; box-shadow: 0 2px 10px rgba(0,0,0,0.02); user-select: none; -webkit-user-select: none; }
+        .key-btn:active { background: var(--tag-bg); }
+        .btn { background: var(--black); color: var(--white); border: none; padding: 14px 28px; border-radius: var(--radius-sm); font-size: 16px; cursor: pointer; margin-top: 30px; transition: opacity 0.2s; font-weight: 500; width: 100%; }
+        .btn:active { opacity: 0.8; }
+        .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--black); }
+        
+        /* Status Bar */
+        #status-bar { height: 44px; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; font-size: 14px; font-weight: 600; position: absolute; top: 0; width: 100%; z-index: 100; color: var(--text-color); pointer-events: none; }
+        
+        /* Desktop Wrapper for Swiping */
+        #desktop-wrapper { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; width: 100%; height: 100%; scroll-behavior: smooth; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        #desktop-wrapper::-webkit-scrollbar { display: none; }
+        
+        .desktop-page { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; overflow-y: auto; padding-bottom: 120px; position: relative; }
+        
+        /* Profile Card Component */
+        .profile-card { position: relative; background: transparent; border-radius: 20px; padding: 12px 20px; margin: 60px 20px 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid var(--white); display: flex; flex-direction: column; align-items: center; z-index: 1; }
+        .profile-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 20px; z-index: -2; background-color: rgba(255, 255, 255, 0.6); background-size: cover; background-position: center; }
+        .profile-bg-blur { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 20px; z-index: -1; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); mask-image: linear-gradient(to bottom, transparent 30%, black 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 30%, black 100%); pointer-events: none; }
+        .profile-main { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 22px; }
+        .profile-col { display: flex; flex-direction: column; gap: 24px; flex: 1; align-items: center; margin-top: 16px; }
+        .info-tag { background: rgba(240, 240, 240, 0.85); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); padding: 6px 10px; border-radius: 12px; font-size: 12px; color: var(--text-color); text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 85px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+        .profile-avatar-wrap { display: flex; justify-content: center; margin: 0; flex-shrink: 0; }
+        #avatar-area { width: 110px; height: 110px; border-radius: 50%; background-color: var(--tag-bg); background-size: cover; background-position: center; border: 2px solid var(--white); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .profile-desc { text-align: center; margin-top: 14px; font-size: 12px; color: var(--text-secondary); width: 100%; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
+
+        /* Time & Weather Component */
+        .tw-card { background: var(--app-bg); border-radius: 20px; padding: 10px 16px; margin: 0 20px 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid var(--white); display: flex; gap: 12px; }
+        .tw-left { flex: 1; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--tag-bg); padding-right: 10px; }
+        .tw-day { color: var(--text-secondary); font-size: 12px; margin-bottom: 2px; }
+        .tw-time { color: var(--black); font-size: 34px; font-weight: 300; line-height: 1; margin-bottom: 6px; letter-spacing: -1px; }
+        .tw-deco-bar { background: var(--tag-bg); border-radius: 10px; padding: 10px 10px; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11px; color: #555; width: 100%; }
+        .tw-right { flex: 1; display: flex; flex-direction: column; gap: 4px; justify-content: center; }
+        .tw-r-top { color: var(--text-secondary); font-size: 12px; margin-bottom: 2px; }
+        .tw-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+        .tw-item-bg { background: var(--tag-bg); border-radius: 10px; padding: 4px 8px; display: inline-flex; align-items: center; gap: 8px; font-size: 12px; width: fit-content; margin: 2px 0; }
+        .tw-icon-circles { position: relative; width: 16px; height: 16px; }
+        .tw-icon-circles::before, .tw-icon-circles::after { content: ''; position: absolute; width: 10px; height: 10px; border-radius: 50%; background: #666; }
+        .tw-icon-circles::before { left: 0; top: 2px; }
+        .tw-icon-circles::after { right: 0; bottom: 2px; background: #888; }
+        .tw-icon-hollow { width: 10px; height: 10px; border-radius: 50%; border: 2px solid #aaa; }
+        .tw-icon-solid { width: 12px; height: 12px; border-radius: 50%; background: #aaa; }
+        .tw-text-black { color: var(--black); font-weight: 500; }
+        .tw-text-grey { color: var(--text-secondary); }
+        
+        /* Row 3 Container */
+        .row-3 { display: flex; gap: 16px; margin: 0 20px 20px; }
+        
+        /* Row 3 Left */
+        .r3-left { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; }
+        .r3-loc { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; align-items: flex-start; padding-left: 14px; }
+        .r3-loc-l1 { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 600; color: var(--text-color); }
+        .r3-loc-l2 { font-size: 13px; color: var(--text-secondary); }
+        .r3-loc-line { height: 3px; background-color: var(--border-color); width: 80%; margin-top: 4px; border-radius: 2px; }
+        .r3-loc-l3 { font-size: 12px; color: var(--text-secondary); }
+        .r3-apps { display: flex; gap: 28px; justify-content: flex-start; margin-top: auto; margin-bottom: 16px; padding-left: 16px; }
+        
+        /* Retro Device Component */
+        .retro-device { width: 180px; flex-shrink: 0; background: #e5e5e5; border-radius: 24px; padding: 12px; display: flex; flex-direction: column; box-shadow: inset -2px -2px 6px rgba(0,0,0,0.05), inset 2px 2px 6px rgba(255,255,255,0.8), 0 4px 10px rgba(0,0,0,0.03); }
+        .retro-screen { flex: 1; background: #ffffff; border-radius: 16px; border: 3px solid #d0d0d0; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; background-size: cover; background-position: center; min-height: 110px; }
+        .retro-screen::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.4) 100%); pointer-events: none; z-index: 1; }
+        .retro-battery { position: absolute; top: 8px; left: 8px; z-index: 2; display: flex; align-items: center; }
+        .retro-battery-body { width: 14px; height: 7px; border: 1px solid #fff; border-radius: 2px; padding: 1px; }
+        .retro-battery-body::after { content: ''; display: block; width: 70%; height: 100%; background: #fff; }
+        .retro-battery-tip { width: 2px; height: 3px; background: #fff; border-radius: 0 2px 2px 0; }
+        .retro-time { position: absolute; bottom: 8px; left: 8px; right: 8px; z-index: 2; display: flex; justify-content: space-between; align-items: flex-end; color: #fff; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        .retro-time-num { font-size: 20px; font-weight: 600; line-height: 1; }
+        .retro-date-num { font-size: 11px; font-weight: 500; margin-bottom: 1px; }
+        
+        .retro-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding: 0 4px; }
+        .retro-dots { display: grid; grid-template-columns: repeat(2, 4px); gap: 4px; }
+        .retro-dots div { width: 4px; height: 4px; border-radius: 50%; background: #999; }
+        .retro-btn { width: 26px; height: 26px; border-radius: 50%; background: #d8d8d8; display: flex; justify-content: center; align-items: center; color: #666; box-shadow: inset 1px 1px 3px rgba(255,255,255,0.8), inset -1px -1px 3px rgba(0,0,0,0.1); cursor: pointer; }
+        .retro-switch { width: 40px; height: 20px; border-radius: 10px; background: #d8d8d8; display: flex; justify-content: space-between; align-items: center; padding: 0 6px; color: #666; box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1), inset -1px -1px 3px rgba(255,255,255,0.8); }
+        
+        .retro-bottom-text-wrap { text-align: center; margin-top: 8px; }
+        .retro-bottom-text { display: inline-block; background: #999; color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 500; letter-spacing: 1px; }
+        
+        /* App Grid */
+        .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px 12px; padding: 10px 24px 20px; }
+        .app-icon-wrapper { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .app-icon { width: 56px; height: 56px; border-radius: 16px; background-color: var(--app-bg); border: 1px solid var(--border-color); color: var(--black); font-size: 20px; font-weight: 500; display: flex; justify-content: center; align-items: center; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.02); transition: transform 0.1s, background-color 0.1s; padding: 4px; line-height: 1; }
+        .app-icon:active { transform: scale(0.92); background-color: var(--tag-bg); }
+        .app-label { margin-top: 6px; font-size: 12px; color: var(--text-color); font-weight: 400; }
+        
+        /* Page Indicators */
+        #page-indicators { position: absolute; bottom: 110px; width: 100%; display: flex; justify-content: center; gap: 8px; z-index: 40; pointer-events: none; }
+        .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-color); transition: 0.3s; }
+        .dot.active { background: var(--black); }
+        
+        /* Dock */
+        #dock { position: absolute; bottom: 24px; left: 16px; right: 16px; height: 86px; border-radius: var(--radius-lg); display: flex; justify-content: space-around; align-items: center; padding: 0 12px; z-index: 50; border: 0.5px solid rgba(0,0,0,0.05); }
+        
+        /* App Windows */
+        .app-window { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 200; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .app-window.active { transform: translateX(0); }
+        .app-header { height: 50px; display: flex; justify-content: space-between; align-items: center; padding: 0 16px; border-bottom: 0.5px solid var(--border-color); background: var(--app-bg); z-index: 10; padding-top: env(safe-area-inset-top); }
+        .app-title { font-weight: 600; font-size: 17px; }
+        .app-content { flex: 1; overflow-y: auto; background: var(--bg-color); position: relative; }
+        .back-btn { cursor: pointer; font-size: 16px; color: var(--black); display: flex; align-items: center; padding: 5px; }
+        .header-btn { padding: 5px 10px; color: var(--black); font-weight: 500; font-size: 15px; cursor: pointer; }
+        
+        /* Edit Mode */
+        body.edit-mode .editable, body.edit-mode .editable-img { outline: 2px dashed #999; outline-offset: 2px; cursor: pointer; position: relative; }
+        body.edit-mode .editable::after, body.edit-mode .editable-img::after { content: '编辑'; position: absolute; top: -10px; right: -10px; background: var(--black); color: var(--white); font-size: 10px; padding: 2px 4px; border-radius: 4px; z-index: 20; }
+        
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
+        .modal-overlay.active { opacity: 1; pointer-events: auto; }
+        .modal-content { background: var(--app-bg); width: 100%; max-width: 430px; border-radius: 24px 24px 0 0; padding: 24px; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
+        .modal-overlay.active .modal-content { transform: translateY(0); }
+        .modal-title { font-size: 18px; font-weight: 600; margin-bottom: 20px; text-align: center; }
+        .input-group { margin-bottom: 16px; }
+        .input-group label { display: block; margin-bottom: 8px; font-size: 14px; color: var(--text-secondary); }
+        .input-group input, .input-group textarea { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: var(--radius-sm); background: var(--app-bg); color: var(--text-color); font-size: 16px; outline: none; }
+        .input-group textarea { resize: vertical; min-height: 80px; }
+        
+        /* Generic List/Cards */
+        .list-group { background: var(--app-bg); border: 1px solid var(--border-color); border-radius: var(--radius-sm); margin: 16px; overflow: hidden; }
+        .list-item { display: flex; justify-content: space-between; align-items: center; padding: 16px; border-bottom: 0.5px solid var(--border-color); cursor: pointer; }
+        .list-item:active { background: var(--tag-bg); }
+        .list-item:last-child { border-bottom: none; }
+        .list-item-content { flex: 1; }
+        .list-item-title { font-size: 16px; font-weight: 500; margin-bottom: 4px; }
+        .list-item-desc { font-size: 14px; color: var(--text-secondary); }
+        
+        /* Chat UI */
+        .chat-list { list-style: none; background: var(--app-bg); }
+        .chat-item { display: flex; padding: 12px 16px; border-bottom: 0.5px solid var(--border-color); align-items: center; cursor: pointer; }
+        .chat-item:active { background: var(--tag-bg); }
+        .chat-avatar { width: 48px; height: 48px; border-radius: var(--radius-sm); background: var(--tag-bg); border: 0.5px solid var(--border-color); margin-right: 12px; background-size: cover; background-position: center; flex-shrink: 0; }
+        .chat-info { flex: 1; min-width: 0; }
+        .chat-header-info { display: flex; justify-content: space-between; margin-bottom: 4px; }
+        .chat-name { font-weight: 500; font-size: 16px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .chat-time { font-size: 12px; color: var(--text-secondary); }
+        .chat-preview { font-size: 14px; color: var(--text-secondary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        .chat-room { display: flex; flex-direction: column; height: 100%; background: var(--bg-color); }
+        .chat-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 16px; }
+        .message { display: flex; align-items: flex-start; }
+        .message.mine { flex-direction: row-reverse; }
+        .msg-avatar { width: 40px; height: 40px; border-radius: var(--radius-sm); background: var(--tag-bg); border: 0.5px solid var(--border-color); flex-shrink: 0; background-size: cover; background-position: center; }
+        .msg-content-wrapper { display: flex; flex-direction: column; max-width: 70%; margin: 0 12px; }
+        .message.mine .msg-content-wrapper { align-items: flex-end; }
+        .msg-name { font-size: 12px; color: var(--text-secondary); margin-bottom: 4px; margin-left: 4px; }
+        .message.mine .msg-name { display: none; }
+        .msg-bubble { padding: 10px 14px; border-radius: 16px; font-size: 15px; line-height: 1.4; word-break: break-word; }
+        .message.mine .msg-bubble { background: var(--black); color: var(--white); border-top-right-radius: 4px; }
+        .message.other .msg-bubble { background: var(--app-bg); color: var(--black); border: 0.5px solid var(--border-color); border-top-left-radius: 4px; }
+        
+        .chat-input-area { display: flex; align-items: center; padding: 10px 16px; background: var(--app-bg); border-top: 0.5px solid var(--border-color); padding-bottom: calc(10px + env(safe-area-inset-bottom)); }
+        .chat-input-area input { flex: 1; padding: 10px 16px; border: 1px solid var(--border-color); border-radius: 20px; background: var(--tag-bg); color: var(--text-color); font-size: 15px; outline: none; }
+        .chat-input-area button { margin-left: 12px; padding: 8px 16px; background: var(--black); color: var(--white); border: none; border-radius: 16px; font-weight: 500; font-size: 15px; }
+        
+        /* Switch */
+        .switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: var(--border-color); transition: .4s; border-radius: 28px; }
+        .slider:before { position: absolute; content: ""; height: 24px; width: 24px; left: 2px; bottom: 2px; background-color: white; transition: .4s; border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        input:checked + .slider { background-color: var(--black); }
+        input:checked + .slider:before { transform: translateX(22px); }
+    </style>
+    <style id="custom-styles"></style>
+</head>
+<body>
+    <!-- Hidden file input for image upload -->
+    <input type="file" id="image-uploader" accept="image/*" class="hidden">
+
+    <div id="app-container">
+        
+        <!-- Lock Screen -->
+        <div id="lock-screen">
+            <div style="font-size: 60px; font-weight: 200; margin-bottom: 10px; color: var(--text-color);" id="lock-time">12:00</div>
+            <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 60px;" id="lock-date">3月17日 星期二</div>
+            
+            <div style="font-size: 16px; margin-bottom: 20px; color: var(--text-color);" id="pin-prompt">请输入密码</div>
+            
+            <div class="pin-display" id="pin-dots">
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+                <div class="pin-dot"></div>
+            </div>
+            
+            <div class="keypad" id="keypad-container">
+                <div class="key-btn" data-val="1">1</div>
+                <div class="key-btn" data-val="2">2</div>
+                <div class="key-btn" data-val="3">3</div>
+                <div class="key-btn" data-val="4">4</div>
+                <div class="key-btn" data-val="5">5</div>
+                <div class="key-btn" data-val="6">6</div>
+                <div class="key-btn" data-val="7">7</div>
+                <div class="key-btn" data-val="8">8</div>
+                <div class="key-btn" data-val="9">9</div>
+                <div class="key-btn" style="background: transparent; border: none; box-shadow: none; cursor: default;"></div>
+                <div class="key-btn" data-val="0">0</div>
+                <div class="key-btn" data-val="del" style="background: transparent; border: none; box-shadow: none; font-size: 16px;">删除</div>
+            </div>
+        </div>
+
+        <!-- Phone UI -->
+        <div id="phone-ui" class="hidden" style="height: 100%;">
+            <div id="status-bar">
+                <span id="time-display">12:00</span>
+                <span>100%</span>
+            </div>
+
+            <!-- Desktop Wrapper (Swipeable) -->
+            <div id="desktop-wrapper">
+                <!-- Page 1: Profile Card + Apps -->
+                <div class="desktop-page" id="page-1">
+                    
+                    <!-- New Profile Card Component -->
+                    <div class="profile-card">
+                        <div class="profile-bg editable-img" data-key="profileBgUrl"></div>
+                        <div class="profile-bg-blur"></div>
+                        <div class="profile-main">
+                            <div class="profile-col">
+                                <div class="info-tag editable" data-key="topLeft">左上信息</div>
+                                <div class="info-tag editable" data-key="bottomLeft">左下信息</div>
+                            </div>
+                            
+                            <div class="profile-avatar-wrap">
+                                <div id="avatar-area" class="editable-img" data-key="avatarUrl"></div>
+                            </div>
+                            
+                            <div class="profile-col">
+                                <div class="info-tag editable" data-key="topRight">右上信息</div>
+                                <div class="info-tag editable" data-key="bottomRight">右下信息</div>
+                            </div>
+                        </div>
+                        
+                        <div class="profile-desc editable" data-key="bottomText">
+                            底部装饰区文字
+                        </div>
+                    </div>
+
+                    <!-- Time & Weather Component -->
+                    <div class="tw-card">
+                        <div class="tw-left">
+                            <div class="tw-day" id="tw-auto-day">星期二</div>
+                            <div class="tw-time" id="tw-auto-time">12:00</div>
+                            <div class="tw-deco-bar editable" data-key="twDeco">
+                                ★ ♥ ♫ HAVE A NICE DAY
+                            </div>
+                        </div>
+                        <div class="tw-right">
+                            <div class="tw-r-top editable" data-key="twTop">TUESDAY</div>
+                            <div class="tw-item">
+                                <div class="tw-icon-circles"></div>
+                                <div class="tw-text-black editable" data-key="twItem1">CLOUDY</div>
+                            </div>
+                            <div class="tw-item">
+                                <div class="tw-text-grey editable" data-key="twItem2">Breezy & Cool</div>
+                            </div>
+                            <div class="tw-item-bg">
+                                <div class="tw-icon-hollow"></div>
+                                <div class="tw-text-grey editable" data-key="twItem3">22°C</div>
+                            </div>
+                            <div class="tw-item">
+                                <div class="tw-text-grey editable" data-key="twItem4">Perfect for chilling</div>
+                            </div>
+                            <div class="tw-item">
+                                <div class="tw-icon-solid"></div>
+                                <div class="tw-text-black editable" data-key="twItem5">50%</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Row 3: Location/Apps + Retro Device -->
+                    <div class="row-3">
+                        <div class="r3-left">
+                            <div class="r3-loc">
+                                <div class="r3-loc-l1">
+                                    <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                                    <span class="editable" data-key="r3Loc1">浙江省 杭州市</span>
+                                </div>
+                                <div class="r3-loc-l2 editable" data-key="r3Loc2">正在下雨，记得带伞</div>
+                                <div class="r3-loc-line"></div>
+                                <div class="r3-loc-l3 editable" data-key="r3Loc3">今天也是充满希望的一天</div>
+                            </div>
+                            <div class="r3-apps">
+                                <div class="app-icon-wrapper" onclick="openApp(APPS.find(a=>a.id==='pomodoro'))">
+                                    <div class="app-icon" style="background: var(--black); color: var(--white);">番</div>
+                                    <div class="app-label">番茄钟</div>
+                                </div>
+                                <div class="app-icon-wrapper" onclick="openApp(APPS.find(a=>a.id==='ledger'))">
+                                    <div class="app-icon">账</div>
+                                    <div class="app-label">记账本</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="r3-right retro-device">
+                            <div class="retro-screen editable-img" data-key="retroImg">
+                                <div class="retro-battery">
+                                    <div class="retro-battery-body"></div>
+                                    <div class="retro-battery-tip"></div>
+                                </div>
+                                <div class="retro-time">
+                                    <div class="retro-time-num" id="retro-auto-time">12:00</div>
+                                    <div class="retro-date-num" id="retro-auto-date">10/24</div>
+                                </div>
+                            </div>
+                            <div class="retro-controls">
+                                <div class="retro-dots">
+                                    <div></div><div></div><div></div><div></div>
+                                </div>
+                                <div class="retro-btn">
+                                    <svg viewBox="0 0 24 24" width="14" height="14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+                                </div>
+                                <div class="retro-switch">
+                                    <svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+                                    <svg viewBox="0 0 24 24" width="10" height="10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                                </div>
+                            </div>
+                            <div class="retro-bottom-text-wrap">
+                                <div class="retro-bottom-text editable" data-key="retroText">CHILL TIME</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="app-grid" id="app-grid-1">
+                        <!-- Page 1 Apps injected here -->
+                    </div>
+                </div>
+
+                <!-- Page 2: More Apps -->
+                <div class="desktop-page" id="page-2">
+                    <div style="height: 60px;"></div> <!-- Padding for status bar -->
+                    <div class="app-grid" id="app-grid-2">
+                        <!-- Page 2 Apps injected here -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Page Indicators -->
+            <div id="page-indicators">
+                <div class="dot active"></div>
+                <div class="dot"></div>
+            </div>
+
+            <!-- Dock -->
+            <div id="dock" class="glass">
+                <!-- Dock apps injected here -->
+            </div>
+
+            <!-- App Windows Container -->
+            <div id="app-windows"></div>
+        </div>
+        
+        <!-- Global Edit Modal (For Text) -->
+        <div class="modal-overlay" id="edit-modal">
+            <div class="modal-content">
+                <div class="modal-title" id="edit-modal-title">编辑内容</div>
+                <div class="input-group" id="edit-input-container">
+                    <!-- Input injected here -->
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-outline" style="margin-top:0;" onclick="closeEditModal()">取消</button>
+                    <button class="btn" style="margin-top:0;" onclick="saveEdit()">保存</button>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+    <script>
+        // --- State Management ---
+        const DB = {
+            get: (key, def) => {
+                const val = localStorage.getItem('lp_' + key);
+                return val ? JSON.parse(val) : def;
+            },
+            set: (key, val) => {
+                try {
+                    localStorage.setItem('lp_' + key, JSON.stringify(val));
+                } catch(e) {
+                    console.error('Storage error', e);
+                    alert('保存失败：存储空间不足（可能是之前上传的图片过大）。请尝试重新上传一张图片以覆盖它。');
+                }
+            }
+        };
+
+        // --- Default Data ---
+        const defaultProfile = {
+            topLeft: 'MOOD',
+            topRight: 'INTJ',
+            bottomLeft: 'EARTH',
+            bottomRight: 'CHILL',
+            bottomText: '“在这里写下属于你的慵懒句子”',
+            avatarUrl: '',
+            profileBgUrl: '',
+            twDeco: '★ ♥ ♫ HAVE A NICE DAY',
+            twTop: 'TUESDAY',
+            twItem1: 'CLOUDY',
+            twItem2: 'Breezy & Cool',
+            twItem3: '22°C',
+            twItem4: 'Perfect for chilling',
+            twItem5: '50%',
+            r3Loc1: '浙江省 杭州市',
+            r3Loc2: '正在下雨，记得带伞',
+            r3Loc3: '今天也是充满希望的一天',
+            retroText: 'CHILL TIME',
+            retroImg: ''
+        };
+        
+        let profile = DB.get('profile', defaultProfile);
+        let customCss = DB.get('customCss', '');
+        let isEditMode = false;
+        let currentEditKey = null;
+        let currentImageKey = null;
+
+        // --- App Definitions ---
+        const APPS = [
+            { id: 'wechat', name: '私聊', icon: '聊', dock: true, render: renderWeChat },
+            { id: 'settings', name: '设置', icon: '设', dock: true, render: () => openApiSettings() }, // Replaced AI Chat with Settings(API)
+            { id: 'community', name: '邻里圈', icon: '圈', dock: true, render: renderCommunity },
+            { id: 'beautify', name: '美化', icon: '美', dock: true, render: renderSettings }, // Replaced Settings with Beautify
+            { id: 'worldbook', name: '世界书', icon: '书', page: 2, render: renderWorldbook },
+            { id: 'lovenotes', name: '恋爱笔记', icon: '恋', page: 2, render: renderLoveNotes },
+            { id: 'radio', name: '心声电台', icon: '听', page: 2, render: renderRadio },
+            { id: 'canteen', name: '今日食堂', icon: '食', page: 2, render: renderCanteen },
+            { id: 'game', name: '默契挑战', icon: '戏', page: 2, render: renderGame },
+            { id: 'pomodoro', name: '番茄钟', icon: '番', render: renderPomodoro, hideFromGrid: true },
+            { id: 'ledger', name: '记账本', icon: '账', render: renderLedger, hideFromGrid: true }
+        ];
+
+        // --- Lock Screen Logic ---
+        let currentPin = '';
+        const TARGET_PIN = '0409';
+
+        function updateLockTime() {
+            const now = new Date();
+            document.getElementById('lock-time').innerText = 
+                `${now.getHours().toString().padStart(2,'0')}:${now.getMinutes().toString().padStart(2,'0')}`;
+            const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+            document.getElementById('lock-date').innerText = 
+                `${now.getMonth()+1}月${now.getDate()}日 ${days[now.getDay()]}`;
         }
 
-        /* Base Styles */
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            -webkit-tap-highlight-color: transparent;
-        }
+        setInterval(updateLockTime, 1000);
+        updateLockTime();
 
-        body {
-            font-family: var(--font-family);
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-            color: var(--text-color);
-        }
-
-        /* Phone Container */
-        #phone-container {
-            width: 100%;
-            height: 100%;
-            max-width: 430px; /* iPhone Pro Max width */
-            max-height: 932px;
-            background-color: var(--bg-color);
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 50px rgba(0,0,0,0.5);
-        }
-
-        @media (min-width: 431px) {
-            #phone-container {
-                height: 90vh;
-                border-radius: 40px;
-                border: 8px solid #333;
+        function inputPin(num) {
+            // console.log("Input PIN:", num, "Current:", currentPin);
+            if(currentPin.length < 4) {
+                currentPin += num;
+                updatePinDots();
+                
+                if(currentPin.length === 4) {
+                    setTimeout(checkPin, 200);
+                }
             }
         }
 
-        /* Status Bar */
-        #status-bar {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 44px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 20px;
-            z-index: 100;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-color);
-            pointer-events: none;
+        function deletePin() {
+            if(currentPin.length > 0) {
+                currentPin = currentPin.slice(0, -1);
+                updatePinDots();
+            }
         }
 
-        .icons i {
-            margin-left: 5px;
+        function updatePinDots() {
+            const dots = document.querySelectorAll('.pin-dot');
+            dots.forEach((dot, index) => {
+                if(index < currentPin.length) {
+                    dot.classList.add('filled');
+                } else {
+                    dot.classList.remove('filled');
+                }
+            });
         }
 
-        /* Views */
-        .view {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: none;
-            background-color: var(--bg-color);
-            overflow-y: auto;
-            overflow-x: hidden;
-        }
-
-        .view.active {
-            display: block;
-        }
-
-        /* Desktop */
-        #desktop {
-            padding-top: 44px;
-            padding-bottom: 90px; /* Space for dock */
-        }
-
-        /* Cover Area */
-        #cover-area {
-            width: 100%;
-            height: 200px;
-            background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');     
-            background-size: cover;
-            background-position: center;
-            position: relative;
-        }
-
-        .glass-overlay {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 50%;
-            background: linear-gradient(to bottom, transparent, var(--bg-color));
-        }
-
-        /* Avatar Area */
-        #avatar-area {
-            position: relative;
-            margin-top: -40px;
-            text-align: center;
-            z-index: 10;
-        }
-
-        #user-avatar {
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            border: 3px solid var(--bg-color);
-            object-fit: cover;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-        }
-
-        /* Personal Info */
-        #personal-info {
-            text-align: center;
-            padding: 10px 20px;
-        }
-
-        #user-nickname {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 5px;
-        }
-
-        #user-signature {
-            font-size: 14px;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-            white-space: pre-wrap;
-        }
-
-        #user-region {
-            font-size: 12px;
-            background-color: rgba(0,0,0,0.05);
-            padding: 4px 10px;
-            border-radius: 12px;
-            color: var(--text-secondary);
-        }
-
-        /* Quick Stats */
-        #quick-stats {
-            display: flex;
-            justify-content: center;
-            gap: 30px;
-            margin: 20px 0;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-num {
-            display: block;
-            font-size: 18px;
-            font-weight: 700;
-        }
-
-        .stat-label {
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-
-        /* Function Menu */
-        #function-menu {
-            display: flex;
-            justify-content: space-around;
-            padding: 15px;
-            margin: 0 20px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border-radius: var(--border-radius);
-            border: 1px solid var(--glass-border);
-        }
-
-        .func-icon {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            font-size: 12px;
-            color: var(--text-secondary);
-            cursor: pointer;
-        }
-
-        .func-icon i {
-            font-size: 20px;
-            color: var(--text-color);
-            margin-bottom: 5px;
-        }
-
-        /* Icon Grid */
-        #icon-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px 10px;
-            padding: 30px 20px;
-        }
-
-        .app-icon {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-        }
-
-        .app-icon-img {
-            width: 60px;
-            height: 60px;
-            border-radius: 16px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 28px;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            margin-bottom: 8px;
-        }
-
-        .app-icon-name {
-            font-size: 12px;
-            color: var(--text-color);
-            text-align: center;
-        }
-
-        /* Dock */
-        #dock {
-            position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            height: 80px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(var(--glass-blur));
-            -webkit-backdrop-filter: blur(var(--glass-blur));
-            border-radius: 30px;
-            border: 1px solid var(--glass-border);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            padding: 0 10px;
-            z-index: 50;
-        }
-
-        /* App Container */
-        #app-header {
-            height: 44px;
-            margin-top: 44px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 15px;
-            border-bottom: 1px solid rgba(0,0,0,0.05);
-            background: var(--bg-color);
-            position: sticky;
-            top: 0;
-            z-index: 10;
-        }
-
-        #btn-back, #btn-app-more {
-            background: none;
-            border: none;
-            font-size: 20px;
-            color: var(--accent-color);
-            cursor: pointer;
-            padding: 5px;
-        }
-
-        #app-title {
-            font-size: 17px;
-            font-weight: 600;
-        }
-
-        #app-content {
-            height: calc(100% - 88px);
-            overflow-y: auto;
-            position: relative;
-        }
-
-        /* Edit Overlay */
-        #edit-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.5);
-            z-index: 200;
-            backdrop-filter: blur(5px);
-        }
-
-        #edit-overlay.hidden {
-            display: none;
-        }
-
-        .edit-toolbar {
-            position: absolute;
-            top: 44px;
-            left: 0;
-            width: 100%;
-            display: flex;
-            justify-content: space-between;
-            padding: 10px 20px;
-            color: white;
-            font-weight: bold;
-        }
-
-        .edit-toolbar button {
-            background: var(--glass-bg);
-            border: none;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 15px;
-            cursor: pointer;
-        }
-
-        .editable {
-            outline: 2px dashed rgba(255, 255, 255, 0.8);
-            cursor: pointer;
-            position: relative;
-        }
-
-        .editable:hover {
-            outline: 2px solid white;
-        }
-
-        /* App Specific Colors */
-        .bg-wechat { background: #07c160; }
-        .bg-aichat { background: #007aff; }
-        .bg-worldbook { background: #5856d6; }
-        .bg-community { background: #ff9500; }
-        .bg-lovenotes { background: #ff2d55; }
-        .bg-radio { background: #af52de; }
-        .bg-canteen { background: #ffcc00; }
-        .bg-game { background: #34c759; }
-        .bg-settings { background: #8e8e93; }
-
-        /* Utilities */
-        .hidden {
-            display: none !important;
-        }
-    </style>
-</head>
-<body>
-    <div id="phone-container">
-        <!-- Status Bar -->
-        <div id="status-bar">
-            <div class="time" id="status-time">12:00</div>
-            <div class="icons">
-                <i class="fas fa-signal"></i>
-                <i class="fas fa-wifi"></i>
-                <i class="fas fa-battery-full"></i>
-            </div>
-        </div>
-
-        <!-- Desktop View -->
-        <div id="desktop" class="view active">
-            <!-- Personal Cover Area -->
-            <div id="cover-area">
-                <div class="glass-overlay"></div>
-            </div>
+        // Setup Event Listeners for Keypad (Better Mobile Support)
+        document.querySelectorAll('.key-btn').forEach(btn => {
+            if(!btn.dataset.val) return;
             
-            <!-- Avatar Area -->
-            <div id="avatar-area">
-                <img src="https://via.placeholder.com/80" alt="Avatar" id="user-avatar">
-            </div>
+            // Use mousedown/touchstart for maximum compatibility
+            const triggerAction = (e) => {
+                if(e) e.preventDefault();
+                btn.style.background = 'var(--tag-bg)';
+                
+                const val = btn.dataset.val;
+                if(val === 'del') {
+                    deletePin();
+                } else {
+                    inputPin(parseInt(val));
+                }
+            };
+            
+            const resetAction = () => {
+                if(btn.dataset.val !== 'del') {
+                    btn.style.background = 'var(--app-bg)';
+                } else {
+                    btn.style.background = 'transparent';
+                }
+            };
 
-            <!-- Personal Info Area -->
-            <div id="personal-info">
-                <h2 id="user-nickname">用户昵称</h2>
-                <p id="user-signature">这是一段个性签名，支持换行和emoji ✨</p>
-                <span id="user-region">📍 未知星球</span>
-            </div>
+            btn.addEventListener('mousedown', triggerAction);
+            btn.addEventListener('touchstart', triggerAction, {passive: false});
+            
+            btn.addEventListener('mouseup', resetAction);
+            btn.addEventListener('touchend', resetAction);
+            btn.addEventListener('mouseleave', resetAction);
+            btn.addEventListener('touchcancel', resetAction);
+        });
 
-            <!-- Quick Stats Area -->
-            <div id="quick-stats">
-                <div class="stat-item"><span class="stat-num" id="stat-posts">0</span><span class="stat-label">帖子</span></div>
-                <div class="stat-item"><span class="stat-num" id="stat-fans">0</span><span class="stat-label">粉丝</span></div>
-                <div class="stat-item"><span class="stat-num" id="stat-following">0</span><span class="stat-label">关注</span></div>
-            </div>
+        // Add true keyboard support
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('lock-screen').classList.contains('hidden')) return;
+            
+            if (e.key >= '0' && e.key <= '9') {
+                inputPin(parseInt(e.key));
+                // Optional: visual feedback
+                const btn = document.querySelector(`.key-btn[data-val="${e.key}"]`);
+                if(btn) {
+                    btn.style.background = 'var(--tag-bg)';
+                    setTimeout(() => btn.style.background = 'var(--app-bg)', 100);
+                }
+            } else if (e.key === 'Backspace' || e.key === 'Delete') {
+                deletePin();
+                const btn = document.querySelector(`.key-btn[data-val="del"]`);
+                if(btn) {
+                    btn.style.background = 'rgba(0,0,0,0.1)';
+                    setTimeout(() => btn.style.background = 'transparent', 100);
+                }
+            }
+        });
 
-            <!-- Function Menu Area -->
-            <div id="function-menu">
-                <div class="func-icon"><i class="fas fa-edit"></i><span>编辑</span></div>
-                <div class="func-icon"><i class="fas fa-share-alt"></i><span>分享</span></div>
-                <div class="func-icon"><i class="fas fa-qrcode"></i><span>名片</span></div>
-                <div class="func-icon"><i class="fas fa-cog"></i><span>设置</span></div>
-            </div>
+        function checkPin() {
+            const promptEl = document.getElementById('pin-prompt');
+            if(currentPin === TARGET_PIN) {
+                startSystem();
+            } else {
+                promptEl.innerText = '密码错误，请重试';
+                promptEl.style.color = 'red';
+                
+                // Shake animation
+                const dotsContainer = document.getElementById('pin-dots');
+                dotsContainer.style.transform = 'translateX(-10px)';
+                setTimeout(() => dotsContainer.style.transform = 'translateX(10px)', 50);
+                setTimeout(() => dotsContainer.style.transform = 'translateX(-10px)', 100);
+                setTimeout(() => dotsContainer.style.transform = 'translateX(10px)', 150);
+                setTimeout(() => dotsContainer.style.transform = 'translateX(0)', 200);
 
-            <!-- Icon Grid Area -->
-            <div id="icon-grid">
-                <!-- App icons will be injected here by JS -->
-            </div>
+                setTimeout(() => {
+                    currentPin = '';
+                    updatePinDots();
+                    promptEl.innerText = '请输入密码';
+                    promptEl.style.color = 'var(--text-color)';
+                }, 800);
+            }
+        }
 
-            <!-- Dock Area -->
-            <div id="dock">
-                <!-- Dock icons will be injected here by JS -->
-            </div>
-        </div>
+        // --- System Init ---
+        function startSystem() {
+            document.getElementById('lock-screen').classList.add('hidden');
+            document.getElementById('phone-ui').classList.remove('hidden');
+            
+            applyCustomCss();
+            updateProfileUI();
+            renderDesktopApps();
+            startClock();
+            setupScrollListener();
+            setupImageUploader();
+            
+            // Long press to edit desktop
+            let pressTimer;
+            const desktop = document.getElementById('desktop-wrapper');
+            desktop.addEventListener('touchstart', (e) => {
+                if(e.target.closest('.app-icon-wrapper')) return;
+                pressTimer = window.setTimeout(toggleEditMode, 1000);
+            });
+            desktop.addEventListener('touchend', () => clearTimeout(pressTimer));
+            desktop.addEventListener('mousedown', (e) => {
+                if(e.target.closest('.app-icon-wrapper')) return;
+                pressTimer = window.setTimeout(toggleEditMode, 1000);
+            });
+            desktop.addEventListener('mouseup', () => clearTimeout(pressTimer));
+            desktop.addEventListener('mouseleave', () => clearTimeout(pressTimer));
+            
+            // Editable clicks
+            document.querySelectorAll('.editable, .editable-img').forEach(el => {
+                el.addEventListener('click', (e) => {
+                    if(isEditMode) {
+                        e.stopPropagation();
+                        if(el.classList.contains('editable-img')) {
+                            currentImageKey = el.dataset.key;
+                            document.getElementById('image-uploader').click();
+                        } else {
+                            openEditModal(el.dataset.key);
+                        }
+                    }
+                });
+            });
+        }
 
-        <!-- App Container (for opening apps) -->
-        <div id="app-container" class="view">
-            <div id="app-header">
-                <button id="btn-back"><i class="fas fa-chevron-left"></i></button>
-                <h2 id="app-title">App Name</h2>
-                <button id="btn-app-more"><i class="fas fa-ellipsis-h"></i></button>
-            </div>
-            <div id="app-content"></div>
-        </div>
-        
-        <!-- Edit Mode Overlay -->
-        <div id="edit-overlay" class="hidden">
-            <div class="edit-toolbar">
-                <button id="btn-exit-edit">完成</button>
-                <span>编辑主页</span>
-                <button id="btn-add-element"><i class="fas fa-plus"></i></button>
-            </div>
-            <!-- Edit controls will appear here -->
-        </div>
-    </div>
+        // --- Desktop Logic ---
+        function setupScrollListener() {
+            const wrapper = document.getElementById('desktop-wrapper');
+            const dots = document.querySelectorAll('.dot');
+            wrapper.addEventListener('scroll', () => {
+                const pageIndex = Math.round(wrapper.scrollLeft / wrapper.clientWidth);
+                dots.forEach((dot, i) => {
+                    dot.classList.toggle('active', i === pageIndex);
+                });
+            }, { passive: true });
+        }
 
-    <script src="js/store.js"></script>
-    <script src="js/desktop.js"></script>
-    <script src="js/apps/settings.js"></script>
-    <script src="js/apps/wechat.js"></script>
-    <script src="js/apps/aichat.js"></script>
-    <script src="js/apps/worldbook.js"></script>
-    <script src="js/apps/community.js"></script>
-    <script src="js/apps/lovenotes.js"></script>
-    <script src="js/apps/radio.js"></script>
-    <script src="js/apps/canteen.js"></script>
-    <script src="js/apps/game.js"></script>
-    <script src="js/main.js"></script>
+        function setupImageUploader() {
+            document.getElementById('image-uploader').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if(file && currentImageKey) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const img = new Image();
+                        img.onload = function() {
+                            const canvas = document.createElement('canvas');
+                            const ctx = canvas.getContext('2d');
+                            let w = img.width;
+                            let h = img.height;
+                            const max = 600; // 自动压缩图片，防止超过本地存储限制
+                            if (w > max || h > max) {
+                                if (w > h) { h = Math.round(h * max / w); w = max; }
+                                else { w = Math.round(w * max / h); h = max; }
+                            }
+                            canvas.width = w;
+                            canvas.height = h;
+                            ctx.drawImage(img, 0, 0, w, h);
+                            profile[currentImageKey] = canvas.toDataURL('image/jpeg', 0.8);
+                            DB.set('profile', profile);
+                            updateProfileUI();
+                        };
+                        img.src = event.target.result;
+                    };
+                    reader.readAsDataURL(file);
+                }
+                this.value = ''; // reset
+            });
+        }
+
+        function renderDesktopApps() {
+            const grid1 = document.getElementById('app-grid-1');
+            const grid2 = document.getElementById('app-grid-2');
+            const dock = document.getElementById('dock');
+            grid1.innerHTML = '';
+            grid2.innerHTML = '';
+            dock.innerHTML = '';
+            
+            APPS.forEach(app => {
+                if(app.hideFromGrid) return;
+                const el = document.createElement('div');
+                el.className = 'app-icon-wrapper';
+                
+                if(app.id === 'settings') {
+                    // special case for API settings which doesn't use the standard render wrapper
+                    el.onclick = () => app.render();
+                } else {
+                    el.onclick = () => openApp(app);
+                }
+                
+                // Single character icon with name underneath
+                el.innerHTML = `
+                    <div class="app-icon">${app.icon}</div>
+                    <div class="app-label">${app.name}</div>
+                `;
+                
+                if(app.dock) dock.appendChild(el);
+                else if (app.page === 2) grid2.appendChild(el);
+                else grid1.appendChild(el);
+            });
+        }
+
+        function updateProfileUI() {
+            ['topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'bottomText', 'twDeco', 'twTop', 'twItem1', 'twItem2', 'twItem3', 'twItem4', 'twItem5', 'r3Loc1', 'r3Loc2', 'r3Loc3', 'retroText'].forEach(key => {
+                const el = document.querySelector(`.editable[data-key="${key}"]`);
+                if(el) el.innerText = profile[key] || '';
+            });
+            
+            const avatarEl = document.getElementById('avatar-area');
+            if(profile.avatarUrl) {
+                avatarEl.style.backgroundImage = `url(${profile.avatarUrl})`;
+            } else {
+                avatarEl.style.backgroundImage = 'none';
+            }
+
+            const bgEl = document.querySelector('.profile-bg');
+            if(bgEl) {
+                if(profile.profileBgUrl) {
+                    bgEl.style.backgroundImage = `url(${profile.profileBgUrl})`;
+                } else {
+                    bgEl.style.backgroundImage = 'none';
+                }
+            }
+
+            const retroScreenEl = document.querySelector('.retro-screen');
+            if(retroScreenEl) {
+                if(profile.retroImg) {
+                    retroScreenEl.style.backgroundImage = `url(${profile.retroImg})`;
+                } else {
+                    retroScreenEl.style.backgroundImage = 'none';
+                }
+            }
+        }
+
+        function toggleEditMode() {
+            isEditMode = !isEditMode;
+            if(isEditMode) {
+                document.body.classList.add('edit-mode');
+                alert('已进入编辑模式\n- 点击文字可修改内容\n- 点击头像可从相册选择图片\n再次长按空白处退出。');
+            } else {
+                document.body.classList.remove('edit-mode');
+            }
+        }
+
+        // --- Edit Modal Logic ---
+        function openEditModal(key) {
+            currentEditKey = key;
+            const container = document.getElementById('edit-input-container');
+            const title = document.getElementById('edit-modal-title');
+            
+            const labels = {
+                topLeft: '左上信息', topRight: '右上信息',
+                bottomLeft: '左下信息', bottomRight: '右下信息',
+                bottomText: '底部装饰文字',
+                twDeco: '左侧装饰栏',
+                twTop: '右侧顶部',
+                twItem1: '天气状态1',
+                twItem2: '天气描述1',
+                twItem3: '温度数据',
+                twItem4: '天气描述2',
+                twItem5: '湿度/百分比',
+                r3Loc1: '地区',
+                r3Loc2: '地区副标题',
+                r3Loc3: '横线下方文字',
+                retroText: '复古设备底部文字'
+            };
+            title.innerText = `编辑 ${labels[key] || '内容'}`;
+            
+            container.innerHTML = `<input type="text" id="edit-input" value="${profile[key] || ''}" placeholder="输入内容...">`;
+            
+            document.getElementById('edit-modal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.remove('active');
+            currentEditKey = null;
+        }
+
+        function saveEdit() {
+            if(!currentEditKey) return;
+            const val = document.getElementById('edit-input').value;
+            profile[currentEditKey] = val;
+            DB.set('profile', profile);
+            updateProfileUI();
+            closeEditModal();
+        }
+
+        // --- App Window Management ---
+        function openApp(app) {
+            let win = document.getElementById(`window-${app.id}`);
+            if(!win) {
+                win = document.createElement('div');
+                win.id = `window-${app.id}`;
+                win.className = 'app-window';
+                win.innerHTML = `
+                    <div class="app-header">
+                        <div class="back-btn" onclick="closeApp('${app.id}')">‹ 返回</div>
+                        <div class="app-title">${app.name}</div>
+                        <div class="header-btn"></div>
+                    </div>
+                    <div class="app-content" id="content-${app.id}"></div>
+                `;
+                document.getElementById('app-windows').appendChild(win);
+                app.render(document.getElementById(`content-${app.id}`));
+            }
+            // Trigger reflow
+            void win.offsetWidth;
+            win.classList.add('active');
+        }
+
+        function closeApp(appId) {
+            const win = document.getElementById(`window-${appId}`);
+            if(win) win.classList.remove('active');
+        }
+
+        // --- Utility ---
+        function startClock() {
+            const updateTime = () => {
+                const now = new Date();
+                const hh = now.getHours().toString().padStart(2,'0');
+                const mm = now.getMinutes().toString().padStart(2,'0');
+                const timeStr = `${hh}:${mm}`;
+                
+                document.getElementById('time-display').innerText = timeStr;
+                
+                const twTime = document.getElementById('tw-auto-time');
+                if(twTime) twTime.innerText = timeStr;
+                
+                const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+                const twDay = document.getElementById('tw-auto-day');
+                if(twDay) twDay.innerText = days[now.getDay()];
+
+                const retroTime = document.getElementById('retro-auto-time');
+                if(retroTime) retroTime.innerText = timeStr;
+
+                const retroDate = document.getElementById('retro-auto-date');
+                if(retroDate) retroDate.innerText = `${now.getMonth()+1}/${now.getDate()}`;
+            };
+            updateTime();
+            setInterval(updateTime, 1000);
+        }
+
+        function applyCustomCss() {
+            document.getElementById('custom-styles').innerHTML = customCss;
+        }
+
+        // --- APP IMPLEMENTATIONS ---
+
+        // 1. Beautify (formerly Settings / CSS Editor)
+        function renderSettings(container) {
+            container.innerHTML = `
+                <div class="list-group">
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <div class="list-item-title">高级美化 (CSS)</div>
+                            <div class="list-item-desc">自定义全局及各APP样式</div>
+                        </div>
+                    </div>
+                    <div style="padding: 16px;">
+                        <textarea id="css-editor-textarea" placeholder="/* 在此输入自定义CSS */">${customCss}</textarea>
+                        <button class="btn" style="width:100%" onclick="saveCss()">保存并应用</button>
+                        <button class="btn btn-outline" style="width:100%; margin-top:10px;" onclick="resetCss()">恢复默认</button>
+                    </div>
+                </div>
+            `;
+            
+            window.saveCss = () => {
+                customCss = document.getElementById('css-editor-textarea').value;
+                DB.set('customCss', customCss);
+                applyCustomCss();
+                alert('样式已应用');
+            };
+            window.resetCss = () => {
+                customCss = '';
+                document.getElementById('css-editor-textarea').value = '';
+                DB.set('customCss', customCss);
+                applyCustomCss();
+            };
+        }
+
+        // 2. WeChat (私聊)
+        function renderWeChat(container) {
+            let contacts = DB.get('wechat_contacts', [
+                { id: '1', name: '系统助手', preview: '欢迎使用小手机', time: '12:00' }
+            ]);
+            
+            let html = `<div class="chat-list">`;
+            if(contacts.length === 0) {
+                html += `<div class="empty-state"><div class="empty-icon"></div><div style="margin-top:20px; color:var(--text-secondary);">暂无联系人</div></div>`;
+            } else {
+                contacts.forEach(c => {
+                    html += `
+                        <div class="chat-item" onclick="openChatRoom('${c.id}', '${c.name}')">
+                            <div class="chat-avatar"></div>
+                            <div class="chat-info">
+                                <div class="chat-header-info">
+                                    <div class="chat-name">${c.name}</div>
+                                    <div class="chat-time">${c.time}</div>
+                                </div>
+                                <div class="chat-preview">${c.preview}</div>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            html += `</div>
+            <div style="padding: 20px;">
+                <button class="btn btn-outline" style="width:100%" onclick="addWeChatContact()">+ 添加联系人</button>
+            </div>`;
+            container.innerHTML = html;
+            
+            window.addWeChatContact = () => {
+                const name = prompt('输入联系人名称:');
+                if(name) {
+                    contacts.push({ id: Date.now().toString(), name, preview: '新联系人', time: '刚刚' });
+                    DB.set('wechat_contacts', contacts);
+                    renderWeChat(container);
+                }
+            };
+        }
+
+        window.openChatRoom = (id, name) => {
+            const winId = `chat-${id}`;
+            let win = document.getElementById(winId);
+            if(!win) {
+                win = document.createElement('div');
+                win.id = winId;
+                win.className = 'app-window';
+                document.getElementById('app-windows').appendChild(win);
+            }
+            
+            let messages = DB.get(`chat_msgs_${id}`, []);
+            
+            const renderMsgs = () => {
+                return messages.map(m => `
+                    <div class="message ${m.isMine ? 'mine' : 'other'}">
+                        <div class="msg-avatar"></div>
+                        <div class="msg-content-wrapper">
+                            <div class="msg-name">${m.isMine ? '我' : name}</div>
+                            <div class="msg-bubble">${m.text}</div>
+                        </div>
+                    </div>
+                `).join('');
+            };
+
+            win.innerHTML = `
+                <div class="app-header">
+                    <div class="back-btn" onclick="document.getElementById('${winId}').classList.remove('active')">‹ 返回</div>
+                    <div class="app-title">${name}</div>
+                    <div class="header-btn">···</div>
+                </div>
+                <div class="chat-room">
+                    <div class="chat-messages" id="msgs-${id}">${renderMsgs()}</div>
+                    <div class="chat-input-area">
+                        <input type="text" id="input-${id}" placeholder="发消息...">
+                        <button onclick="sendChatMsg('${id}')">发送</button>
+                    </div>
+                </div>
+            `;
+            
+            window.sendChatMsg = (chatId) => {
+                const input = document.getElementById(`input-${chatId}`);
+                const text = input.value.trim();
+                if(!text) return;
+                
+                messages.push({ text, isMine: true });
+                DB.set(`chat_msgs_${chatId}`, messages);
+                input.value = '';
+                
+                const msgsContainer = document.getElementById(`msgs-${chatId}`);
+                msgsContainer.innerHTML = renderMsgs();
+                msgsContainer.scrollTop = msgsContainer.scrollHeight;
+                
+                setTimeout(() => {
+                    messages.push({ text: '自动回复: ' + text, isMine: false });
+                    DB.set(`chat_msgs_${chatId}`, messages);
+                    if(document.getElementById(`msgs-${chatId}`)) {
+                        document.getElementById(`msgs-${chatId}`).innerHTML = renderMsgs();
+                        document.getElementById(`msgs-${chatId}`).scrollTop = document.getElementById(`msgs-${chatId}`).scrollHeight;
+                    }
+                }, 1000);
+            };
+            
+            void win.offsetWidth;
+            win.classList.add('active');
+            setTimeout(() => {
+                const mc = document.getElementById(`msgs-${id}`);
+                mc.scrollTop = mc.scrollHeight;
+            }, 100);
+        };
+
+        // 3. API Settings (Now opened directly from dock)
+        window.openApiSettings = () => {
+            let win = document.getElementById('window-apisettings');
+            if(!win) {
+                win = document.createElement('div');
+                win.id = 'window-apisettings';
+                win.className = 'app-window';
+                document.getElementById('app-windows').appendChild(win);
+            }
+            
+            let config = DB.get('api_config', {
+                url: '', key: '', model: '', temp: 0.7, maxTokens: 2000, headers: '',
+                fallbackUrl: '', fallbackKey: '', fallbackModel: '',
+                advMode: false, reqTemplate: '', resPath: ''
+            });
+
+            win.innerHTML = `
+                <div class="app-header">
+                    <div class="back-btn" onclick="document.getElementById('window-apisettings').classList.remove('active')">‹ 返回</div>
+                    <div class="app-title">API配置</div>
+                    <div class="header-btn" onclick="saveApiSettings()">保存</div>
+                </div>
+                <div class="app-content" style="padding: 16px; background: var(--bg-color);">
+                    <div style="background: var(--app-bg); border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-color);">
+                        <h3 style="font-size: 15px; margin-bottom: 12px;">主API设置</h3>
+                        <div class="input-group">
+                            <label>API地址</label>
+                            <input type="text" id="api-url" value="${config.url}" placeholder="https://api.openai.com/v1/chat/completions">
+                        </div>
+                        <div class="input-group">
+                            <label>API Key</label>
+                            <input type="password" id="api-key" value="${config.key}" placeholder="sk-...">
+                        </div>
+                        <div class="input-group">
+                            <label>模型 (Model)</label>
+                            <input type="text" id="api-model" value="${config.model}" placeholder="gpt-3.5-turbo">
+                        </div>
+                        <div class="input-group">
+                            <label>温度 (Temperature): <span id="temp-val">${config.temp}</span></label>
+                            <input type="range" min="0" max="2" step="0.1" id="api-temp" value="${config.temp}" oninput="document.getElementById('temp-val').innerText=this.value" style="width:100%">
+                        </div>
+                        <div class="input-group">
+                            <label>最大Token</label>
+                            <input type="number" id="api-tokens" value="${config.maxTokens}">
+                        </div>
+                        <div class="input-group">
+                            <label>自定义Headers (JSON)</label>
+                            <textarea id="api-headers" placeholder='{"Authorization": "Bearer xxx"}'>${config.headers}</textarea>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--app-bg); border-radius: 16px; padding: 16px; margin-bottom: 16px; border: 1px solid var(--border-color);">
+                        <h3 style="font-size: 15px; margin-bottom: 12px;">备用API (失败时切换)</h3>
+                        <div class="input-group">
+                            <label>备用API地址</label>
+                            <input type="text" id="api-fallback-url" value="${config.fallbackUrl}">
+                        </div>
+                        <div class="input-group">
+                            <label>备用API Key</label>
+                            <input type="password" id="api-fallback-key" value="${config.fallbackKey}">
+                        </div>
+                        <div class="input-group">
+                            <label>备用模型</label>
+                            <input type="text" id="api-fallback-model" value="${config.fallbackModel}">
+                        </div>
+                    </div>
+
+                    <div style="background: var(--app-bg); border-radius: 16px; padding: 16px; margin-bottom: 30px; border: 1px solid var(--border-color);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                            <h3 style="font-size: 15px; margin: 0;">高级模式</h3>
+                            <label class="switch">
+                                <input type="checkbox" id="api-adv-mode" ${config.advMode ? 'checked' : ''} onchange="document.getElementById('adv-settings').style.display = this.checked ? 'block' : 'none'">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div id="adv-settings" style="display: ${config.advMode ? 'block' : 'none'};">
+                            <div class="input-group">
+                                <label>请求体JSON模板 ({{messages}})</label>
+                                <textarea id="api-req-template" placeholder='{"model": "${config.model}", "messages": {{messages}}}'>${config.reqTemplate}</textarea>
+                            </div>
+                            <div class="input-group">
+                                <label>响应提取路径</label>
+                                <input type="text" id="api-res-path" value="${config.resPath}" placeholder="choices[0].message.content">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            window.saveApiSettings = () => {
+                DB.set('api_config', {
+                    url: document.getElementById('api-url').value,
+                    key: document.getElementById('api-key').value,
+                    model: document.getElementById('api-model').value,
+                    temp: parseFloat(document.getElementById('api-temp').value),
+                    maxTokens: parseInt(document.getElementById('api-tokens').value),
+                    headers: document.getElementById('api-headers').value,
+                    fallbackUrl: document.getElementById('api-fallback-url').value,
+                    fallbackKey: document.getElementById('api-fallback-key').value,
+                    fallbackModel: document.getElementById('api-fallback-model').value,
+                    advMode: document.getElementById('api-adv-mode').checked,
+                    reqTemplate: document.getElementById('api-req-template').value,
+                    resPath: document.getElementById('api-res-path').value
+                });
+                alert('API配置已保存');
+                win.classList.remove('active');
+            };
+
+            void win.offsetWidth;
+            win.classList.add('active');
+        };
+
+        // 4. Worldbook
+        function renderWorldbook(container) {
+            let entries = DB.get('worldbook', []);
+            let html = `
+                <div style="padding: 16px;">
+                    <button class="btn" style="width:100%" onclick="addWorldbookEntry()">+ 添加词条</button>
+                </div>
+                <div class="list-group">
+            `;
+            if(entries.length === 0) {
+                html += `<div class="empty-state"><div class="empty-icon"></div><div style="margin-top:20px; color:var(--text-secondary);">知识库为空</div></div>`;
+            } else {
+                entries.forEach((e, i) => {
+                    html += `
+                        <div class="list-item">
+                            <div class="list-item-content">
+                                <div class="list-item-title">${e.name}</div>
+                                <div class="list-item-desc">关键词: ${e.keys}</div>
+                            </div>
+                            <button class="btn btn-outline" style="padding: 4px 8px; font-size: 12px;" onclick="deleteWorldbook(${i})">删除</button>
+                        </div>
+                    `;
+                });
+            }
+            html += `</div>`;
+            container.innerHTML = html;
+            
+            window.addWorldbookEntry = () => {
+                const name = prompt('词条名称:');
+                const keys = prompt('触发关键词(逗号分隔):');
+                if(name && keys) {
+                    entries.push({ name, keys });
+                    DB.set('worldbook', entries);
+                    renderWorldbook(container);
+                }
+            };
+            window.deleteWorldbook = (i) => {
+                entries.splice(i, 1);
+                DB.set('worldbook', entries);
+                renderWorldbook(container);
+            };
+        }
+
+        // 5. Community
+        function renderCommunity(container) {
+            container.innerHTML = `
+                <div style="padding: 10px; display:flex; gap:10px; border-bottom: 0.5px solid var(--border-color); background: var(--app-bg);">
+                    <div style="font-weight:bold; border-bottom: 2px solid var(--black); padding-bottom: 5px; color: var(--black);">推荐</div>
+                    <div style="color: var(--text-secondary); padding-bottom: 5px;">最新</div>
+                </div>
+                <div style="padding: 12px;">
+                    <div class="list-group" style="margin: 0 0 12px 0; padding: 16px;">
+                        <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                            <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--tag-bg); margin-right: 12px;"></div>
+                            <div>
+                                <div style="font-weight:500; font-size:15px;">系统管理员</div>
+                                <div style="font-size:12px; color:var(--text-secondary);">刚刚</div>
+                            </div>
+                        </div>
+                        <div style="font-size: 15px; line-height: 1.5; margin-bottom: 12px; color: var(--black);">欢迎来到小手机社区！这里是大家交流的地方。</div>
+                        <div style="display: flex; gap: 24px; color: var(--text-secondary); font-size: 14px;">
+                            <span>♡ 12</span>
+                            <span>💬 3</span>
+                        </div>
+                    </div>
+                </div>
+                <div style="position: absolute; bottom: 30px; right: 20px;">
+                    <div style="width:50px; height:50px; border-radius:25px; background:var(--black); color:var(--white); display:flex; justify-content:center; align-items:center; font-size:24px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">+</div>
+                </div>
+            `;
+        }
+
+        // 6. Love Notes
+        function renderLoveNotes(container) {
+            container.innerHTML = `
+                <div style="padding: 20px; text-align: center; background: var(--app-bg); margin: 16px; border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                    <div style="font-size: 40px; margin-bottom: 10px;"></div>
+                    <div style="font-size: 18px; font-weight: bold; margin-bottom: 5px;">恋爱笔记</div>
+                    <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 20px;">记录你们的点点滴滴</div>
+                    <button class="btn" style="margin-top: 0;">邀请绑定</button>
+                </div>
+                <div class="list-group">
+                    <div class="list-item"><div class="list-item-title">共同日记</div><div>›</div></div>
+                    <div class="list-item"><div class="list-item-title">纪念日</div><div>›</div></div>
+                    <div class="list-item"><div class="list-item-title">私密相册</div><div>›</div></div>
+                </div>
+            `;
+        }
+
+        // 7. Radio
+        function renderRadio(container) {
+            container.innerHTML = `
+                <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; padding: 20px;">
+                    <div style="width: 200px; height: 200px; border-radius: 50%; background: var(--black); border: 10px solid var(--tag-bg); display:flex; justify-content:center; align-items:center; margin-bottom: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.05);">
+                        <div style="width: 40px; height: 40px; border-radius: 50%; background: var(--app-bg);"></div>
+                    </div>
+                    <div style="font-size: 20px; font-weight: bold; margin-bottom: 10px;">深夜 EMO 频道</div>
+                    <div style="font-size: 14px; color: var(--text-secondary); margin-bottom: 40px;">正在播放：随机电台</div>
+                    
+                    <div style="width: 100%; display:flex; justify-content:space-around; align-items:center;">
+                        <span style="font-size: 24px;">⏮</span>
+                        <div style="width: 60px; height: 60px; border-radius: 30px; background: var(--black); color: var(--white); display:flex; justify-content:center; align-items:center; font-size: 24px;">▶</div>
+                        <span style="font-size: 24px;">⏭</span>
+                    </div>
+                </div>
+            `;
+        }
+
+        // 8. Canteen
+        function renderCanteen(container) {
+            container.innerHTML = `
+                <div style="padding: 16px;">
+                    <input type="text" placeholder="搜索菜谱、食材..." style="width:100%; padding:10px 16px; border-radius:20px; border: 1px solid var(--border-color); background:var(--tag-bg); outline:none;">
+                </div>
+                <div style="padding: 0 16px 16px;">
+                    <div style="font-weight:bold; margin-bottom:12px;">今日推荐</div>
+                    <div style="background:var(--app-bg); border-radius:var(--radius-md); overflow:hidden; border: 1px solid var(--border-color);">
+                        <div style="height:150px; background:var(--tag-bg);"></div>
+                        <div style="padding: 16px;">
+                            <div style="font-weight:bold; font-size:16px; margin-bottom:4px;">极简白灼虾</div>
+                            <div style="font-size:13px; color:var(--text-secondary);">低脂健康 · 10分钟搞定</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="padding: 16px; text-align:center;">
+                    <button class="btn btn-outline" style="width:100%; margin-top: 0;">随机吃什么</button>
+                </div>
+            `;
+        }
+
+        // 9. Game
+        function renderGame(container) {
+            container.innerHTML = `
+                <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; padding: 20px; text-align:center;">
+                    <div style="font-size: 60px; margin-bottom: 20px;"></div>
+                    <h2 style="margin-bottom: 10px;">默契挑战</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 40px;">看看你们有多了解对方</p>
+                    <button class="btn" style="width:80%; margin-bottom: 16px;">单人练习模式</button>
+                    <button class="btn btn-outline" style="width:80%; margin-top: 0;">双人同屏PK</button>
+                </div>
+            `;
+        }
+
+        // 10. Pomodoro (番茄钟)
+        function renderPomodoro(container) {
+            container.innerHTML = `
+                <div style="display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; padding: 20px;">
+                    <div style="width: 220px; height: 220px; border-radius: 50%; border: 8px solid var(--black); display:flex; justify-content:center; align-items:center; margin-bottom: 40px;">
+                        <div style="font-size: 48px; font-weight: 200; font-variant-numeric: tabular-nums;">25:00</div>
+                    </div>
+                    <button class="btn" style="width: 200px; border-radius: 30px;">开始专注</button>
+                </div>
+            `;
+        }
+
+        // 11. Ledger (记账本)
+        function renderLedger(container) {
+            container.innerHTML = `
+                <div style="padding: 20px; background: var(--black); color: var(--white); margin: 16px; border-radius: var(--radius-md);">
+                    <div style="font-size: 14px; opacity: 0.8; margin-bottom: 8px;">本月支出 (元)</div>
+                    <div style="font-size: 36px; font-weight: 600;">¥ 2,450.00</div>
+                </div>
+                <div class="list-group">
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <div class="list-item-title">☕ 咖啡</div>
+                            <div class="list-item-desc">今天 09:30</div>
+                        </div>
+                        <div style="font-weight: 500;">-28.00</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="list-item-content">
+                            <div class="list-item-title">🛒 超市购物</div>
+                            <div class="list-item-desc">昨天 18:20</div>
+                        </div>
+                        <div style="font-weight: 500;">-156.50</div>
+                    </div>
+                </div>
+                <div style="position: absolute; bottom: 30px; right: 20px;">
+                    <div style="width:50px; height:50px; border-radius:25px; background:var(--black); color:var(--white); display:flex; justify-content:center; align-items:center; font-size:24px; box-shadow: 0 4px 10px rgba(0,0,0,0.2);">+</div>
+                </div>
+            `;
+        }
+
+    </script>
 </body>
 </html>
