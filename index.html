@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>小手机</title>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style id="custom-css-injection"></style>
+    <style>
+        /* Global Variables */
+        :root {
+            --bg-color: #f5f5f7;
+            --text-color: #1d1d1f;
+            --text-secondary: #86868b;
+            --accent-color: #007aff;
+            --glass-bg: rgba(255, 255, 255, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --glass-blur: 20px;
+            --border-radius: 24px;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: var(--font-family);
+            background-color: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            color: var(--text-color);
+        }
+
+        /* Phone Container */
+        #phone-container {
+            width: 100%;
+            height: 100%;
+            max-width: 430px; /* iPhone Pro Max width */
+            max-height: 932px;
+            background-color: var(--bg-color);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0,0,0,0.5);
+        }
+
+        @media (min-width: 431px) {
+            #phone-container {
+                height: 90vh;
+                border-radius: 40px;
+                border: 8px solid #333;
+            }
+        }
+
+        /* Status Bar */
+        #status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            z-index: 100;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-color);
+            pointer-events: none;
+        }
+
+        .icons i {
+            margin-left: 5px;
+        }
+
+        /* Views */
+        .view {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            background-color: var(--bg-color);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        /* Desktop */
+        #desktop {
+            padding-top: 44px;
+            padding-bottom: 90px; /* Space for dock */
+        }
+
+        /* Cover Area */
+        #cover-area {
+            width: 100%;
+            height: 200px;
+            background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80');     
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .glass-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background: linear-gradient(to bottom, transparent, var(--bg-color));
+        }
+
+        /* Avatar Area */
+        #avatar-area {
+            position: relative;
+            margin-top: -40px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        #user-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 3px solid var(--bg-color);
+            object-fit: cover;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        /* Personal Info */
+        #personal-info {
+            text-align: center;
+            padding: 10px 20px;
+        }
+
+        #user-nickname {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        #user-signature {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            white-space: pre-wrap;
+        }
+
+        #user-region {
+            font-size: 12px;
+            background-color: rgba(0,0,0,0.05);
+            padding: 4px 10px;
+            border-radius: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Quick Stats */
+        #quick-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-num {
+            display: block;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        /* Function Menu */
+        #function-menu {
+            display: flex;
+            justify-content: space-around;
+            padding: 15px;
+            margin: 0 20px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-radius: var(--border-radius);
+            border: 1px solid var(--glass-border);
+        }
+
+        .func-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+
+        .func-icon i {
+            font-size: 20px;
+            color: var(--text-color);
+            margin-bottom: 5px;
+        }
+
+        /* Icon Grid */
+        #icon-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px 10px;
+            padding: 30px 20px;
+        }
+
+        .app-icon {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+        }
+
+        .app-icon-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 16px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 28px;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 8px;
+        }
+
+        .app-icon-name {
+            font-size: 12px;
+            color: var(--text-color);
+            text-align: center;
+        }
+
+        /* Dock */
+        #dock {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            height: 80px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(var(--glass-blur));
+            -webkit-backdrop-filter: blur(var(--glass-blur));
+            border-radius: 30px;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 0 10px;
+            z-index: 50;
+        }
+
+        /* App Container */
+        #app-header {
+            height: 44px;
+            margin-top: 44px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 15px;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            background: var(--bg-color);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        #btn-back, #btn-app-more {
+            background: none;
+            border: none;
+            font-size: 20px;
+            color: var(--accent-color);
+            cursor: pointer;
+            padding: 5px;
+        }
+
+        #app-title {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        #app-content {
+            height: calc(100% - 88px);
+            overflow-y: auto;
+            position: relative;
+        }
+
+        /* Edit Overlay */
+        #edit-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 200;
+            backdrop-filter: blur(5px);
+        }
+
+        #edit-overlay.hidden {
+            display: none;
+        }
+
+        .edit-toolbar {
+            position: absolute;
+            top: 44px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            color: white;
+            font-weight: bold;
+        }
+
+        .edit-toolbar button {
+            background: var(--glass-bg);
+            border: none;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+        }
+
+        .editable {
+            outline: 2px dashed rgba(255, 255, 255, 0.8);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .editable:hover {
+            outline: 2px solid white;
+        }
+
+        /* App Specific Colors */
+        .bg-wechat { background: #07c160; }
+        .bg-aichat { background: #007aff; }
+        .bg-worldbook { background: #5856d6; }
+        .bg-community { background: #ff9500; }
+        .bg-lovenotes { background: #ff2d55; }
+        .bg-radio { background: #af52de; }
+        .bg-canteen { background: #ffcc00; }
+        .bg-game { background: #34c759; }
+        .bg-settings { background: #8e8e93; }
+
+        /* Utilities */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div id="phone-container">
+        <!-- Status Bar -->
+        <div id="status-bar">
+            <div class="time" id="status-time">12:00</div>
+            <div class="icons">
+                <i class="fas fa-signal"></i>
+                <i class="fas fa-wifi"></i>
+                <i class="fas fa-battery-full"></i>
+            </div>
+        </div>
+
+        <!-- Desktop View -->
+        <div id="desktop" class="view active">
+            <!-- Personal Cover Area -->
+            <div id="cover-area">
+                <div class="glass-overlay"></div>
+            </div>
+            
+            <!-- Avatar Area -->
+            <div id="avatar-area">
+                <img src="https://via.placeholder.com/80" alt="Avatar" id="user-avatar">
+            </div>
+
+            <!-- Personal Info Area -->
+            <div id="personal-info">
+                <h2 id="user-nickname">用户昵称</h2>
+                <p id="user-signature">这是一段个性签名，支持换行和emoji ✨</p>
+                <span id="user-region">📍 未知星球</span>
+            </div>
+
+            <!-- Quick Stats Area -->
+            <div id="quick-stats">
+                <div class="stat-item"><span class="stat-num" id="stat-posts">0</span><span class="stat-label">帖子</span></div>
+                <div class="stat-item"><span class="stat-num" id="stat-fans">0</span><span class="stat-label">粉丝</span></div>
+                <div class="stat-item"><span class="stat-num" id="stat-following">0</span><span class="stat-label">关注</span></div>
+            </div>
+
+            <!-- Function Menu Area -->
+            <div id="function-menu">
+                <div class="func-icon"><i class="fas fa-edit"></i><span>编辑</span></div>
+                <div class="func-icon"><i class="fas fa-share-alt"></i><span>分享</span></div>
+                <div class="func-icon"><i class="fas fa-qrcode"></i><span>名片</span></div>
+                <div class="func-icon"><i class="fas fa-cog"></i><span>设置</span></div>
+            </div>
+
+            <!-- Icon Grid Area -->
+            <div id="icon-grid">
+                <!-- App icons will be injected here by JS -->
+            </div>
+
+            <!-- Dock Area -->
+            <div id="dock">
+                <!-- Dock icons will be injected here by JS -->
+            </div>
+        </div>
+
+        <!-- App Container (for opening apps) -->
+        <div id="app-container" class="view">
+            <div id="app-header">
+                <button id="btn-back"><i class="fas fa-chevron-left"></i></button>
+                <h2 id="app-title">App Name</h2>
+                <button id="btn-app-more"><i class="fas fa-ellipsis-h"></i></button>
+            </div>
+            <div id="app-content"></div>
+        </div>
+        
+        <!-- Edit Mode Overlay -->
+        <div id="edit-overlay" class="hidden">
+            <div class="edit-toolbar">
+                <button id="btn-exit-edit">完成</button>
+                <span>编辑主页</span>
+                <button id="btn-add-element"><i class="fas fa-plus"></i></button>
+            </div>
+            <!-- Edit controls will appear here -->
+        </div>
+    </div>
+
+    <script src="js/store.js"></script>
+    <script src="js/desktop.js"></script>
+    <script src="js/apps/settings.js"></script>
+    <script src="js/apps/wechat.js"></script>
+    <script src="js/apps/aichat.js"></script>
+    <script src="js/apps/worldbook.js"></script>
+    <script src="js/apps/community.js"></script>
+    <script src="js/apps/lovenotes.js"></script>
+    <script src="js/apps/radio.js"></script>
+    <script src="js/apps/canteen.js"></script>
+    <script src="js/apps/game.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
