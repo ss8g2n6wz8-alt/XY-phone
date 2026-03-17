@@ -52,22 +52,22 @@
         .desktop-page { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; overflow-y: auto; padding-bottom: 110px; position: relative; }
         
         /* Profile Card Component */
-        .profile-card { position: relative; background: transparent; border-radius: 20px; padding: 12px 20px; margin: 48px 20px 10px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid var(--white); display: flex; flex-direction: column; align-items: center; z-index: 1; }
+        .profile-card { position: relative; background: transparent; border-radius: 20px; padding: 10px 16px; margin: 65px 24px 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid var(--white); display: flex; flex-direction: column; align-items: center; z-index: 1; transform: scale(0.95); transform-origin: top center; }
         .profile-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 20px; z-index: -2; background-color: rgba(255, 255, 255, 0.6); background-size: cover; background-position: center; }
-        .profile-bg-blur { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 20px; z-index: -1; backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); mask-image: linear-gradient(to bottom, transparent 30%, black 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 30%, black 100%); pointer-events: none; }
-        .profile-main { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 22px; }
-        .profile-col { display: flex; flex-direction: column; gap: 24px; flex: 1; align-items: center; margin-top: 16px; }
-        .info-tag { background: rgba(240, 240, 240, 0.85); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); padding: 6px 10px; border-radius: 12px; font-size: 12px; color: var(--text-color); text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 85px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
+        .profile-bg-blur { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 20px; z-index: -1; backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); mask-image: linear-gradient(to bottom, transparent 30%, black 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 30%, black 100%); pointer-events: none; }
+        .profile-main { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 16px; }
+        .profile-col { display: flex; flex-direction: column; gap: 20px; flex: 1; align-items: center; margin-top: 12px; }
+        .info-tag { background: rgba(240, 240, 240, 0.85); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); padding: 6px 8px; border-radius: 12px; font-size: 11px; color: var(--text-color); text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; width: 75px; box-shadow: 0 2px 8px rgba(0,0,0,0.02); }
         .profile-avatar-wrap { display: flex; justify-content: center; margin: 0; flex-shrink: 0; }
-        #avatar-area { width: 110px; height: 110px; border-radius: 50%; background-color: var(--tag-bg); background-size: cover; background-position: center; border: 2px solid var(--white); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-        .profile-desc { text-align: center; margin-top: 14px; font-size: 12px; color: var(--text-secondary); width: 100%; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
+        #avatar-area { width: 96px; height: 96px; border-radius: 50%; background-color: var(--tag-bg); background-size: cover; background-position: center; border: 2px solid var(--white); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .profile-desc { text-align: center; margin-top: 12px; font-size: 11px; color: var(--text-secondary); width: 100%; text-shadow: 0 1px 2px rgba(255,255,255,0.8); }
 
         /* Time & Weather Component */
-        .tw-card { background: var(--app-bg); border-radius: 20px; padding: 10px 16px; margin: 0 20px 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid var(--white); display: flex; gap: 12px; }
-        .tw-left { flex: 1; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--tag-bg); padding-right: 10px; }
-        .tw-day { color: var(--text-secondary); font-size: 12px; margin-bottom: 2px; }
-        .tw-time { color: var(--black); font-size: 34px; font-weight: 300; line-height: 1; margin-bottom: 6px; letter-spacing: -1px; }
-        .tw-deco-bar { background: var(--tag-bg); border-radius: 10px; padding: 10px 10px; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 11px; color: #555; width: 100%; }
+        .tw-card { background: var(--app-bg); border-radius: 20px; padding: 8px 14px; margin: 0 24px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid var(--white); display: flex; gap: 10px; transform: scale(0.95); transform-origin: top center; }
+        .tw-left { flex: 1; display: flex; flex-direction: column; justify-content: center; border-right: 1px solid var(--tag-bg); padding-right: 8px; }
+        .tw-day { color: var(--text-secondary); font-size: 11px; margin-bottom: 2px; }
+        .tw-time { color: var(--black); font-size: 30px; font-weight: 300; line-height: 1; margin-bottom: 6px; letter-spacing: -1px; }
+        .tw-deco-bar { background: var(--tag-bg); border-radius: 10px; padding: 8px; display: flex; align-items: center; justify-content: center; gap: 4px; font-size: 10px; color: #555; width: 100%; }
         .tw-right { flex: 1; display: flex; flex-direction: column; gap: 4px; justify-content: center; }
         .tw-r-top { color: var(--text-secondary); font-size: 12px; margin-bottom: 2px; }
         .tw-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
@@ -82,20 +82,20 @@
         .tw-text-grey { color: var(--text-secondary); }
         
         /* Row 3 Container */
-        .row-3 { display: flex; gap: 16px; margin: 0 20px 20px; }
+        .row-3 { display: flex; gap: 12px; margin: 0 24px 16px; transform: scale(0.95); transform-origin: top center; }
         
         /* Row 3 Left */
         .r3-left { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; }
-        .r3-loc { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; align-items: flex-start; padding-left: 14px; }
-        .r3-loc-l1 { display: flex; align-items: center; gap: 6px; font-size: 16px; font-weight: 600; color: var(--text-color); }
-        .r3-loc-l2 { font-size: 13px; color: var(--text-secondary); }
-        .r3-loc-line { height: 3px; background-color: var(--border-color); width: 80%; margin-top: 4px; border-radius: 2px; }
-        .r3-loc-l3 { font-size: 12px; color: var(--text-secondary); }
-        .r3-apps { display: flex; gap: 28px; justify-content: flex-start; margin-top: auto; margin-bottom: 16px; padding-left: 16px; }
+        .r3-loc { display: flex; flex-direction: column; gap: 6px; margin-top: 6px; align-items: flex-start; padding-left: 10px; }
+        .r3-loc-l1 { display: flex; align-items: center; gap: 4px; font-size: 14px; font-weight: 600; color: var(--text-color); }
+        .r3-loc-l2 { font-size: 12px; color: var(--text-secondary); }
+        .r3-loc-line { height: 3px; background-color: var(--border-color); width: 80%; margin-top: 2px; border-radius: 2px; }
+        .r3-loc-l3 { font-size: 11px; color: var(--text-secondary); }
+        .r3-apps { display: flex; gap: 20px; justify-content: flex-start; margin-top: auto; margin-bottom: 12px; padding-left: 10px; }
         
         /* Retro Device Component */
-        .retro-device { width: 180px; flex-shrink: 0; background: #e5e5e5; border-radius: 24px; padding: 12px; display: flex; flex-direction: column; box-shadow: inset -2px -2px 6px rgba(0,0,0,0.05), inset 2px 2px 6px rgba(255,255,255,0.8), 0 4px 10px rgba(0,0,0,0.03); }
-        .retro-screen { flex: 1; background: #ffffff; border-radius: 16px; border: 3px solid #d0d0d0; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; background-size: cover; background-position: center; min-height: 110px; }
+        .retro-device { width: 160px; flex-shrink: 0; background: #e5e5e5; border-radius: 20px; padding: 10px; display: flex; flex-direction: column; box-shadow: inset -2px -2px 6px rgba(0,0,0,0.05), inset 2px 2px 6px rgba(255,255,255,0.8), 0 4px 10px rgba(0,0,0,0.03); }
+        .retro-screen { flex: 1; background: #ffffff; border-radius: 12px; border: 3px solid #d0d0d0; position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; background-size: cover; background-position: center; min-height: 90px; }
         .retro-screen::after { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, transparent 30%, transparent 70%, rgba(0,0,0,0.4) 100%); pointer-events: none; z-index: 1; }
         .retro-battery { position: absolute; top: 8px; left: 8px; z-index: 2; display: flex; align-items: center; }
         .retro-battery-body { width: 14px; height: 7px; border: 1px solid #fff; border-radius: 2px; padding: 1px; }
@@ -115,19 +115,46 @@
         .retro-bottom-text { display: inline-block; background: #999; color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 500; letter-spacing: 1px; }
         
         /* App Grid */
-        .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px 12px; padding: 10px 24px 20px; }
+        .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px 12px; padding: 10px 24px 20px; }
         .app-icon-wrapper { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
         .app-icon { width: 56px; height: 56px; border-radius: 16px; background-color: var(--app-bg); border: 1px solid var(--border-color); color: var(--black); font-size: 20px; font-weight: 500; display: flex; justify-content: center; align-items: center; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.02); transition: transform 0.1s, background-color 0.1s; padding: 4px; line-height: 1; }
         .app-icon:active { transform: scale(0.92); background-color: var(--tag-bg); }
         .app-label { margin-top: 6px; font-size: 12px; color: var(--text-color); font-weight: 400; }
         
+        /* Girly Component */
+        .girly-card { background: #fdfdfd; border-radius: 24px; padding: 6px 6px 12px 6px; margin: 0 24px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03), inset 0 0 10px rgba(255,255,255,0.5); border: 1px solid #f0f0f0; position: relative; transform: scale(0.92); transform-origin: top center; }
+        .girly-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(#e8e8e8 1px, transparent 1px); background-size: 12px 12px; opacity: 0.6; pointer-events: none; z-index: 0; border-radius: 24px; overflow: hidden; }
+        .gc-notebook-rings { position: absolute; top: -14px; left: 0; right: 0; height: 20px; display: flex; justify-content: space-evenly; padding: 0 16px; z-index: 2; pointer-events: none; }
+        .gc-ring { width: 5px; height: 20px; background: linear-gradient(to bottom, #d0d0d0, #f0f0f0, #c0c0c0); border-radius: 3px; box-shadow: 1px 1px 2px rgba(0,0,0,0.2), inset -1px -1px 2px rgba(0,0,0,0.1); position: relative; }
+        .gc-ring::after { content: ''; position: absolute; bottom: -3px; left: 50%; transform: translateX(-50%); width: 6px; height: 6px; background: #e0e0e0; border-radius: 50%; z-index: -1; box-shadow: inset 1px 1px 2px rgba(0,0,0,0.3); }
+        .girly-card > * { position: relative; z-index: 1; }
+        .gc-top-bar { background: #f5f5f5; border-radius: 10px; padding: 6px 12px; text-align: center; font-size: 12px; font-weight: 800; color: var(--text-secondary); margin: -4px 12px 6px 12px; }
+        .gc-main-row { display: flex; gap: 10px; margin-bottom: 4px; align-items: flex-start; }
+        .gc-social-card { flex: 0 0 140px; background: #f5f5f5; border-radius: 12px; padding: 6px; border: 1px solid #f0f0f0; display: flex; flex-direction: column; gap: 4px; margin-left: 10px; margin-top: 4px; }
+        .gc-sc-top { background: #e0e0e0; border-radius: 6px; padding: 3px 6px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; font-weight: 800; color: var(--text-secondary); }
+        .gc-sc-img { width: 100%; height: 75px; border-radius: 6px; background-color: #fff; background-size: cover; background-position: center; border: 2px solid #fff; }
+        .gc-sc-bottom { background: #e0e0e0; border-radius: 6px; padding: 4px 6px; display: flex; justify-content: space-between; align-items: center; font-size: 10px; color: var(--text-secondary); }
+        .gc-apps-area { flex: 1; display: grid; grid-template-columns: auto auto; gap: 8px 16px; align-content: center; justify-content: center; justify-items: center; }
+        .gc-apps-area .app-icon-wrapper { transform: scale(0.88); margin: -4px; }
+        .gc-dynamic-row { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; }
+        .gc-dyn-left { width: 50px; height: 50px; border-radius: 10px; border: 1px solid #e0e0e0; background-color: #f5f5f5; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; background-size: cover; background-position: center; overflow: hidden; flex-shrink: 0; }
+        .gc-dyn-left-text { font-size: 9px; color: #555; background: rgba(255,255,255,0.8); width: 100%; text-align: center; padding: 2px 0; backdrop-filter: blur(2px); }
+        .gc-dyn-right { flex: 1; display: flex; flex-direction: column; gap: 4px; padding-top: 2px; }
+        .gc-dyn-r-top { display: flex; justify-content: space-between; align-items: center; }
+        .gc-dyn-username { font-size: 13px; font-weight: 500; color: #444; }
+        .gc-dyn-date-wrap { display: flex; align-items: center; gap: 4px; font-size: 10px; color: var(--text-secondary); }
+        .gc-dyn-r-mid { font-size: 12px; font-weight: 600; color: #999; letter-spacing: 0.5px; }
+        .gc-bottom-area { background: #f6f6f6; border-radius: 16px; padding: 12px; margin: 0; border: 1px solid #f0f0f0; background-size: cover; background-position: center; position: relative; min-height: 130px; display: flex; flex-direction: column; }
+        .gc-bottom-text { background: #ffffff; border-radius: 12px; padding: 16px; font-size: 14px; color: var(--text-secondary); text-align: center; border: 1px solid #f0f0f0; position: relative; box-shadow: 0 2px 8px rgba(0,0,0,0.02); margin-top: 8px; flex: 1; display: flex; align-items: center; justify-content: center; }
+        .gc-bottom-text::before { content: ''; position: absolute; top: -6px; left: 28px; width: 12px; height: 12px; background: #ffffff; border-top: 1px solid #f0f0f0; border-left: 1px solid #f0f0f0; transform: rotate(45deg); }
+        
         /* Page Indicators */
-        #page-indicators { position: absolute; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); width: 100%; display: flex; justify-content: center; gap: 8px; z-index: 40; pointer-events: none; }
+        #page-indicators { position: absolute; bottom: calc(100px + env(safe-area-inset-bottom, 0px)); width: 100%; display: flex; justify-content: center; gap: 8px; z-index: 40; pointer-events: none; }
         .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-color); transition: 0.3s; }
         .dot.active { background: var(--black); }
         
         /* Dock */
-        #dock { position: absolute; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); left: 16px; right: 16px; height: 82px; border-radius: var(--radius-lg); display: flex; justify-content: space-around; align-items: center; padding: 0 12px; z-index: 50; border: 0.5px solid rgba(0,0,0,0.05); }
+        #dock { position: absolute; bottom: calc(8px + env(safe-area-inset-bottom, 0px)); left: 16px; right: 16px; height: 86px; border-radius: var(--radius-lg); display: flex; justify-content: space-around; align-items: center; padding: 0 12px; z-index: 50; border: 0.5px solid rgba(0,0,0,0.05); }
         
         /* App Windows */
         .app-window { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 200; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
@@ -141,6 +168,9 @@
         /* Edit Mode */
         body.edit-mode .editable, body.edit-mode .editable-img { outline: 2px dashed #999; outline-offset: 2px; cursor: pointer; position: relative; }
         body.edit-mode .editable::after, body.edit-mode .editable-img::after { content: '编辑'; position: absolute; top: -10px; right: -10px; background: var(--black); color: var(--white); font-size: 10px; padding: 2px 4px; border-radius: 4px; z-index: 20; }
+        
+        #edit-bg-btn { position: absolute; top: 60px; left: 50%; transform: translateX(-50%); z-index: 1000; background: var(--black); color: var(--white); padding: 10px 20px; border-radius: 20px; font-size: 15px; display: none; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-weight: 500; white-space: nowrap; }
+        body.edit-mode #edit-bg-btn { display: block; }
         
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
         .modal-overlay.active { opacity: 1; pointer-events: auto; }
@@ -237,6 +267,7 @@
 
         <!-- Phone UI -->
         <div id="phone-ui" class="hidden" style="height: 100%;">
+            <div id="edit-bg-btn" onclick="triggerGlobalBgUpload()">更换全局壁纸</div>
             <div id="status-bar">
                 <span id="time-display">12:00</span>
                 <span>100%</span>
@@ -318,11 +349,11 @@
                             </div>
                             <div class="r3-apps">
                                 <div class="app-icon-wrapper" onclick="openApp(APPS.find(a=>a.id==='pomodoro'))">
-                                    <div class="app-icon" style="background: var(--black); color: var(--white);">番</div>
+                                    <div class="app-icon" id="manual-icon-pomodoro" style="background: var(--black); color: var(--white);">番</div>
                                     <div class="app-label">番茄钟</div>
                                 </div>
                                 <div class="app-icon-wrapper" onclick="openApp(APPS.find(a=>a.id==='ledger'))">
-                                    <div class="app-icon">账</div>
+                                    <div class="app-icon" id="manual-icon-ledger">账</div>
                                     <div class="app-label">记账本</div>
                                 </div>
                             </div>
@@ -363,7 +394,52 @@
 
                 <!-- Page 2: More Apps -->
                 <div class="desktop-page" id="page-2">
-                    <div style="height: 60px;"></div> <!-- Padding for status bar -->
+                    <div style="height: 40px;"></div> <!-- Padding for status bar -->
+                    
+                    <div class="girly-card">
+                        <div class="gc-notebook-rings">
+                            <div class="gc-ring"></div><div class="gc-ring"></div><div class="gc-ring"></div><div class="gc-ring"></div><div class="gc-ring"></div><div class="gc-ring"></div><div class="gc-ring"></div><div class="gc-ring"></div><div class="gc-ring"></div><div class="gc-ring"></div>
+                        </div>
+                        <div class="gc-top-bar editable" data-key="gcTopBar">✧･ﾟ: *✧･ﾟ:* 少女的日常 *:･ﾟ✧*:･ﾟ✧</div>
+                        
+                        <div class="gc-main-row">
+                            <div class="gc-social-card">
+                                <div class="gc-sc-top">
+                                    <span class="editable" data-key="gcScTop">今日心情</span>
+                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="#555" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+                                </div>
+                                <div class="gc-sc-img editable-img" data-key="gcScImg"></div>
+                                <div class="gc-sc-bottom">
+                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="#555" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                                    <span class="editable" data-key="gcScBottom">保持可爱</span>
+                                    <svg viewBox="0 0 24 24" width="12" height="12" stroke="#555" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                                </div>
+                            </div>
+                            <div class="gc-apps-area" id="component-app-grid">
+                                <!-- Component Apps injected here -->
+                            </div>
+                        </div>
+
+                        <div class="gc-bottom-area editable-img" data-key="gcBottomBg">
+                            <div class="gc-dynamic-row">
+                                <div class="gc-dyn-left editable-img" data-key="gcDynAvatar">
+                                    <div class="gc-dyn-left-text editable" data-key="gcDynAvatarText">Me</div>
+                                </div>
+                                <div class="gc-dyn-right">
+                                    <div class="gc-dyn-r-top">
+                                        <div class="gc-dyn-username editable" data-key="gcDynUsername">Sweet Girl</div>
+                                        <div class="gc-dyn-date-wrap">
+                                            <span id="gc-auto-date">3月17日 周二</span>
+                                            <svg viewBox="0 0 24 24" width="12" height="12" stroke="#555" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                                        </div>
+                                    </div>
+                                    <div class="gc-dyn-r-mid editable" data-key="gcDynHandle">@sweetie_123</div>
+                                </div>
+                            </div>
+                            <div class="gc-bottom-text editable" data-key="gcBottomText">今天也是元气满满的一天呀~</div>
+                        </div>
+                    </div>
+
                     <div class="app-grid" id="app-grid-2">
                         <!-- Page 2 Apps injected here -->
                     </div>
@@ -427,6 +503,7 @@
             bottomText: '“在这里写下属于你的慵懒句子”',
             avatarUrl: '',
             profileBgUrl: '',
+            globalBgUrl: '',
             twDeco: '★ ♥ ♫ HAVE A NICE DAY',
             twTop: 'TUESDAY',
             twItem1: 'CLOUDY',
@@ -438,7 +515,17 @@
             r3Loc2: '正在下雨，记得带伞',
             r3Loc3: '今天也是充满希望的一天',
             retroText: 'CHILL TIME',
-            retroImg: ''
+            retroImg: '',
+            gcTopBar: '✧･ﾟ: *✧･ﾟ:* 少女的日常 *:･ﾟ✧*:･ﾟ✧',
+            gcScTop: '今日心情',
+            gcScImg: '',
+            gcScBottom: '保持可爱',
+            gcDynAvatar: '',
+            gcDynAvatarText: 'Me',
+            gcDynUsername: 'Sweet Girl',
+            gcDynHandle: '@sweetie_123',
+            gcBottomText: '今天也是元气满满的一天呀~',
+            gcBottomBg: ''
         };
         
         let profile = DB.get('profile', defaultProfile);
@@ -451,13 +538,15 @@
         const APPS = [
             { id: 'wechat', name: '私聊', icon: '聊', dock: true, render: renderWeChat },
             { id: 'settings', name: '设置', icon: '设', dock: true, render: () => openApiSettings() }, // Replaced AI Chat with Settings(API)
-            { id: 'community', name: '邻里圈', icon: '圈', dock: true, render: renderCommunity },
+            { id: 'worldbook', name: '世界书', icon: '书', dock: true, render: renderWorldbook },
             { id: 'beautify', name: '美化', icon: '美', dock: true, render: renderSettings }, // Replaced Settings with Beautify
-            { id: 'worldbook', name: '世界书', icon: '书', page: 2, render: renderWorldbook },
-            { id: 'lovenotes', name: '恋爱笔记', icon: '恋', page: 2, render: renderLoveNotes },
-            { id: 'radio', name: '心声电台', icon: '听', page: 2, render: renderRadio },
-            { id: 'canteen', name: '今日食堂', icon: '食', page: 2, render: renderCanteen },
-            { id: 'game', name: '默契挑战', icon: '戏', page: 2, render: renderGame },
+            
+            { id: 'lovenotes', name: '恋爱笔记', icon: '恋', inComponent: true, render: renderLoveNotes },
+            { id: 'canteen', name: '今日食堂', icon: '食', inComponent: true, render: renderCanteen },
+            { id: 'game', name: '默契挑战', icon: '戏', inComponent: true, render: renderGame },
+            { id: 'community', name: '邻里圈', icon: '圈', inComponent: true, render: renderCommunity },
+            
+            { id: 'radio', name: '心声电台', icon: '听', hideFromGrid: true, render: renderRadio },
             { id: 'pomodoro', name: '番茄钟', icon: '番', render: renderPomodoro, hideFromGrid: true },
             { id: 'ledger', name: '记账本', icon: '账', render: renderLedger, hideFromGrid: true }
         ];
@@ -623,6 +712,14 @@
                         e.stopPropagation();
                         if(el.classList.contains('editable-img')) {
                             currentImageKey = el.dataset.key;
+                            if (profile[currentImageKey]) {
+                                if (confirm('该区域已有自定义图片，是否要清除并恢复默认？\n\n点击"确定"清除图片，点击"取消"选择新图片。')) {
+                                    profile[currentImageKey] = '';
+                                    DB.set('profile', profile);
+                                    updateProfileUI();
+                                    return;
+                                }
+                            }
                             document.getElementById('image-uploader').click();
                         } else {
                             openEditModal(el.dataset.key);
@@ -664,9 +761,30 @@
                             canvas.width = w;
                             canvas.height = h;
                             ctx.drawImage(img, 0, 0, w, h);
-                            profile[currentImageKey] = canvas.toDataURL('image/jpeg', 0.8);
-                            DB.set('profile', profile);
-                            updateProfileUI();
+                            
+                            const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
+                            
+                            if (currentImageKey.startsWith('app_icon_')) {
+                                const appId = currentImageKey.replace('app_icon_', '');
+                                const customIcons = DB.get('custom_icons', {});
+                                customIcons[appId] = dataUrl;
+                                DB.set('custom_icons', customIcons);
+                                renderDesktopApps();
+                                const beautifyContent = document.getElementById('content-beautify');
+                                if (beautifyContent && document.getElementById('window-beautify') && document.getElementById('window-beautify').classList.contains('active')) {
+                                    renderSettings(beautifyContent);
+                                }
+                            } else {
+                                profile[currentImageKey] = dataUrl;
+                                DB.set('profile', profile);
+                                updateProfileUI();
+                                if (currentImageKey === 'globalBgUrl') {
+                                    const beautifyContent = document.getElementById('content-beautify');
+                                    if (beautifyContent && document.getElementById('window-beautify') && document.getElementById('window-beautify').classList.contains('active')) {
+                                        renderSettings(beautifyContent);
+                                    }
+                                }
+                            }
                         };
                         img.src = event.target.result;
                     };
@@ -676,16 +794,48 @@
             });
         }
 
+        window.triggerGlobalBgUpload = () => {
+            currentImageKey = 'globalBgUrl';
+            document.getElementById('image-uploader').click();
+        };
+        
+        window.triggerAppIconUpload = (appId) => {
+            currentImageKey = 'app_icon_' + appId;
+            document.getElementById('image-uploader').click();
+        };
+
         function renderDesktopApps() {
             const grid1 = document.getElementById('app-grid-1');
             const grid2 = document.getElementById('app-grid-2');
             const dock = document.getElementById('dock');
+            const compGrid = document.getElementById('component-app-grid');
             grid1.innerHTML = '';
             grid2.innerHTML = '';
             dock.innerHTML = '';
+            if(compGrid) compGrid.innerHTML = '';
             
+            const customIcons = DB.get('custom_icons', {});
+
             APPS.forEach(app => {
-                if(app.hideFromGrid) return;
+                if(app.hideFromGrid) {
+                    const manualIcon = document.getElementById(`manual-icon-${app.id}`);
+                    if (manualIcon) {
+                        if (customIcons[app.id]) {
+                            manualIcon.style.backgroundImage = `url(${customIcons[app.id]})`;
+                            manualIcon.style.backgroundSize = 'cover';
+                            manualIcon.style.backgroundPosition = 'center';
+                            manualIcon.style.color = 'transparent';
+                            manualIcon.style.border = 'none';
+                        } else {
+                            manualIcon.style.backgroundImage = 'none';
+                            manualIcon.style.color = app.id === 'pomodoro' ? 'var(--white)' : 'var(--black)';
+                            manualIcon.style.background = app.id === 'pomodoro' ? 'var(--black)' : 'var(--app-bg)';
+                            manualIcon.style.border = app.id === 'pomodoro' ? 'none' : '1px solid var(--border-color)';
+                        }
+                    }
+                    return;
+                }
+                
                 const el = document.createElement('div');
                 el.className = 'app-icon-wrapper';
                 
@@ -696,20 +846,34 @@
                     el.onclick = () => openApp(app);
                 }
                 
+                const iconStyle = customIcons[app.id] 
+                    ? `background-image: url(${customIcons[app.id]}); background-size: cover; background-position: center; color: transparent; border: none;`
+                    : '';
+
                 // Single character icon with name underneath
                 el.innerHTML = `
-                    <div class="app-icon">${app.icon}</div>
+                    <div class="app-icon" style="${iconStyle}">${app.icon}</div>
                     <div class="app-label">${app.name}</div>
                 `;
                 
                 if(app.dock) dock.appendChild(el);
+                else if (app.inComponent && compGrid) compGrid.appendChild(el);
                 else if (app.page === 2) grid2.appendChild(el);
                 else grid1.appendChild(el);
             });
         }
 
         function updateProfileUI() {
-            ['topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'bottomText', 'twDeco', 'twTop', 'twItem1', 'twItem2', 'twItem3', 'twItem4', 'twItem5', 'r3Loc1', 'r3Loc2', 'r3Loc3', 'retroText'].forEach(key => {
+            const appContainer = document.getElementById('app-container');
+            if(profile.globalBgUrl) {
+                appContainer.style.backgroundImage = `url(${profile.globalBgUrl})`;
+                appContainer.style.backgroundSize = 'cover';
+                appContainer.style.backgroundPosition = 'center';
+            } else {
+                appContainer.style.backgroundImage = 'none';
+            }
+
+            ['topLeft', 'topRight', 'bottomLeft', 'bottomRight', 'bottomText', 'twDeco', 'twTop', 'twItem1', 'twItem2', 'twItem3', 'twItem4', 'twItem5', 'r3Loc1', 'r3Loc2', 'r3Loc3', 'retroText', 'gcTopBar', 'gcScTop', 'gcScBottom', 'gcDynAvatarText', 'gcDynUsername', 'gcDynHandle', 'gcBottomText'].forEach(key => {
                 const el = document.querySelector(`.editable[data-key="${key}"]`);
                 if(el) el.innerText = profile[key] || '';
             });
@@ -737,6 +901,22 @@
                 } else {
                     retroScreenEl.style.backgroundImage = 'none';
                 }
+            }
+            
+            const gcScImgEl = document.querySelector('.gc-sc-img');
+            if(gcScImgEl) {
+                if(profile.gcScImg) gcScImgEl.style.backgroundImage = `url(${profile.gcScImg})`;
+                else gcScImgEl.style.backgroundImage = 'none';
+            }
+            const gcDynAvatarEl = document.querySelector('.gc-dyn-left');
+            if(gcDynAvatarEl) {
+                if(profile.gcDynAvatar) gcDynAvatarEl.style.backgroundImage = `url(${profile.gcDynAvatar})`;
+                else gcDynAvatarEl.style.backgroundImage = 'none';
+            }
+            const gcBottomBgEl = document.querySelector('.gc-bottom-area');
+            if(gcBottomBgEl) {
+                if(profile.gcBottomBg) gcBottomBgEl.style.backgroundImage = `url(${profile.gcBottomBg})`;
+                else gcBottomBgEl.style.backgroundImage = 'none';
             }
         }
 
@@ -770,7 +950,14 @@
                 r3Loc1: '地区',
                 r3Loc2: '地区副标题',
                 r3Loc3: '横线下方文字',
-                retroText: '复古设备底部文字'
+                retroText: '复古设备底部文字',
+                gcTopBar: '顶部装饰栏',
+                gcScTop: '社交卡片顶部文字',
+                gcScBottom: '社交卡片底部文字',
+                gcDynAvatarText: '头像框内文字',
+                gcDynUsername: '用户名',
+                gcDynHandle: '@账号',
+                gcBottomText: '底部文字'
             };
             title.innerText = `编辑 ${labels[key] || '内容'}`;
             
@@ -791,6 +978,7 @@
             DB.set('profile', profile);
             updateProfileUI();
             closeEditModal();
+            showToast('内容已保存');
         }
 
         // --- App Window Management ---
@@ -843,6 +1031,12 @@
 
                 const retroDate = document.getElementById('retro-auto-date');
                 if(retroDate) retroDate.innerText = `${now.getMonth()+1}/${now.getDate()}`;
+                
+                const gcDate = document.getElementById('gc-auto-date');
+                if(gcDate) {
+                    const daysStr = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+                    gcDate.innerText = `${now.getMonth()+1}月${now.getDate()}日 ${daysStr[now.getDay()]}`;
+                }
             };
             updateTime();
             setInterval(updateTime, 1000);
@@ -856,7 +1050,51 @@
 
         // 1. Beautify (formerly Settings / CSS Editor)
         function renderSettings(container) {
+            const customIcons = DB.get('custom_icons', {});
+            
+            let appsHtml = APPS.map(app => {
+                const iconStyle = customIcons[app.id] 
+                    ? `background-image: url(${customIcons[app.id]}); background-size: cover; background-position: center; color: transparent; border: none;`
+                    : '';
+                return `
+                    <div class="list-item" onclick="triggerAppIconUpload('${app.id}')">
+                        <div class="list-item-content">
+                            <div class="list-item-title">${app.name}</div>
+                            <div class="list-item-desc">点击更换图标</div>
+                        </div>
+                        <div class="app-icon" style="width: 36px; height: 36px; font-size: 16px; border-radius: 10px; flex-shrink: 0; margin-left: 10px; ${iconStyle}">${app.icon}</div>
+                        ${customIcons[app.id] ? `<button class="btn btn-outline" style="padding: 4px 8px; font-size: 12px; margin-left: 12px;" onclick="event.stopPropagation(); resetAppIcon('${app.id}')">恢复</button>` : ''}
+                    </div>
+                `;
+            }).join('');
+
             container.innerHTML = `
+                <div class="list-group" style="background: transparent; border: none; margin: 16px 16px 24px;">
+                    <div class="list-item-title" style="margin-bottom: 12px; padding-left: 4px; font-size: 15px; color: var(--text-secondary);">更换全局背景</div>
+                    <div style="display: flex; gap: 16px; overflow-x: auto; width: 100%; padding-bottom: 8px; scrollbar-width: none;">
+                        <div onclick="resetGlobalBg()" style="flex-shrink: 0; width: 100px; height: 216px; border-radius: 24px; border: ${!profile.globalBgUrl ? '2px solid var(--black)' : '1px solid var(--border-color)'}; background: #f5f5f5; position: relative; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden;">
+                            <div style="position: absolute; bottom: 12px; width: 100%; text-align: center; font-size: 12px; color: var(--text-secondary); font-weight: 500;">默认</div>
+                        </div>
+                        ${profile.globalBgUrl ? `
+                        <div style="flex-shrink: 0; width: 100px; height: 216px; border-radius: 24px; border: 2px solid var(--black); background-image: url(${profile.globalBgUrl}); background-size: cover; background-position: center; position: relative; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden;">
+                            <div style="position: absolute; bottom: 12px; width: 100%; text-align: center; font-size: 12px; color: #fff; font-weight: 500; text-shadow: 0 1px 4px rgba(0,0,0,0.8);">当前</div>
+                        </div>
+                        ` : ''}
+                        <div onclick="triggerGlobalBgUpload()" style="flex-shrink: 0; width: 100px; height: 216px; border-radius: 24px; border: 1px solid var(--border-color); background: #ffffff; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.05);">
+                            <div style="font-size: 40px; color: var(--text-secondary); font-weight: 200;">+</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="list-group">
+                    <div class="list-item" style="background: var(--tag-bg);">
+                        <div class="list-item-content">
+                            <div class="list-item-title" style="font-size: 14px; color: var(--text-secondary); margin:0;">App图标自定义</div>
+                        </div>
+                    </div>
+                    ${appsHtml}
+                </div>
+
                 <div class="list-group">
                     <div class="list-item">
                         <div class="list-item-content">
@@ -865,8 +1103,8 @@
                         </div>
                     </div>
                     <div style="padding: 16px;">
-                        <textarea id="css-editor-textarea" placeholder="/* 在此输入自定义CSS */">${customCss}</textarea>
-                        <button class="btn" style="width:100%" onclick="saveCss()">保存并应用</button>
+                        <textarea id="css-editor-textarea" placeholder="/* 在此输入自定义CSS */" style="width: 100%; height: 100px; padding: 8px; border: 1px solid var(--border-color); border-radius: 8px; outline: none; resize: vertical; margin-bottom: 12px; font-family: monospace;">${customCss}</textarea>
+                        <button class="btn" style="width:100%; margin-top: 0;" onclick="saveCss()">保存并应用</button>
                         <button class="btn btn-outline" style="width:100%; margin-top:10px;" onclick="resetCss()">恢复默认</button>
                     </div>
                 </div>
@@ -883,6 +1121,19 @@
                 document.getElementById('css-editor-textarea').value = '';
                 DB.set('customCss', customCss);
                 applyCustomCss();
+            };
+            window.resetAppIcon = (appId) => {
+                const customIcons = DB.get('custom_icons', {});
+                delete customIcons[appId];
+                DB.set('custom_icons', customIcons);
+                renderDesktopApps();
+                renderSettings(container);
+            };
+            window.resetGlobalBg = () => {
+                profile.globalBgUrl = '';
+                DB.set('profile', profile);
+                updateProfileUI();
+                renderSettings(container);
             };
         }
 
