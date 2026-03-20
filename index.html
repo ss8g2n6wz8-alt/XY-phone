@@ -66,16 +66,16 @@
         /* Standalone (PWA) Mode Overrides */
         @media (display-mode: standalone) {
             /* 整体放大，解决全屏状态下感觉小小的、空空的问题 */
-            .profile-card { margin-top: 8px !important; transform: scale(1.02) !important; margin-bottom: 12px !important; }
-            .tw-card { transform: scale(1.02) !important; margin-bottom: 16px !important; margin-top: -4px !important; }
-            .row-3 { transform: scale(1.02) !important; margin-bottom: 16px !important; margin-top: -4px !important; }
-            .girly-card { transform: scale(0.92) !important; margin-top: 4px !important; }
+            .profile-card { margin-top: 4px !important; transform: scale(1.02) !important; margin-bottom: 16px !important; }
+            .tw-card { transform: scale(1.02) !important; margin-bottom: 16px !important; margin-top: 8px !important; }
+            .row-3 { transform: scale(1.02) !important; margin-bottom: 16px !important; margin-top: 8px !important; }
+            .girly-card { transform: scale(0.92) !important; margin-top: -8px !important; }
             
-            #page-2-top-padding { height: 8px !important; }
+            #page-2-top-padding { height: 4px !important; }
             
             /* 那个区域的四个App (Dock) 调整 */
             #dock { 
-                bottom: calc(4px + env(safe-area-inset-bottom, 4px)) !important;
+                bottom: calc(0px + env(safe-area-inset-bottom, 0px)) !important;
                 height: 76px !important;
             }
             #dock .app-icon { width: 48px !important; height: 48px !important; font-size: 18px !important; border-radius: 14px !important; }
