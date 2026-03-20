@@ -59,12 +59,12 @@
         #desktop-wrapper { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; width: 100%; height: 100%; scroll-behavior: smooth; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding-top: env(safe-area-inset-top); }
         #desktop-wrapper::-webkit-scrollbar { display: none; }
         
-        .desktop-page { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; overflow-y: auto; padding-bottom: calc(120px + env(safe-area-inset-bottom, 0px)); position: relative; }
+        .desktop-page { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; overflow: hidden; position: relative; display: flex; flex-direction: column; justify-content: flex-start; }
         
         /* Profile Card Component */
-        .profile-card { position: relative; background: transparent; border-radius: 20px; padding: 10px 16px; margin: 20px 24px 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid var(--white); display: flex; flex-direction: column; align-items: center; z-index: 1; transform: scale(0.95); transform-origin: top center; transition: margin-top 0.3s ease; }
-        body.status-bar-hidden .profile-card { margin-top: 40px; }
-        body.status-bar-hidden #page-2-top-padding { height: 40px !important; }
+        .profile-card { position: relative; background: transparent; border-radius: 20px; padding: 10px 16px; margin: 44px 24px 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.03); border: 1px solid var(--white); display: flex; flex-direction: column; align-items: center; z-index: 1; transform: scale(0.95); transform-origin: top center; transition: margin-top 0.3s ease; }
+        body.status-bar-hidden .profile-card { margin-top: 10px; }
+        body.status-bar-hidden #page-2-top-padding { height: 10px !important; }
         .profile-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 20px; z-index: -2; background-color: rgba(255, 255, 255, 0.6); background-size: cover; background-position: center; }
         .profile-bg-blur { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 20px; z-index: -1; backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); mask-image: linear-gradient(to bottom, transparent 30%, black 100%); -webkit-mask-image: linear-gradient(to bottom, transparent 30%, black 100%); pointer-events: none; }
         .profile-main { display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 16px; }
@@ -127,7 +127,7 @@
         .retro-bottom-text { display: inline-block; background: #999; color: #fff; font-size: 10px; padding: 2px 8px; border-radius: 8px; font-weight: 500; letter-spacing: 1px; }
         
         /* App Grid */
-        .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px 12px; padding: 10px 24px 20px; }
+        .app-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px 12px; padding: 10px 24px 0; flex: 1; align-content: flex-start; }
         .app-icon-wrapper { display: flex; flex-direction: column; align-items: center; cursor: pointer; }
         .app-icon { width: 56px; height: 56px; border-radius: 16px; background-color: var(--app-bg); border: 1px solid var(--border-color); color: var(--black); font-size: 20px; font-weight: 500; display: flex; justify-content: center; align-items: center; text-align: center; box-shadow: 0 2px 8px rgba(0,0,0,0.02); transition: transform 0.1s, background-color 0.1s; padding: 4px; line-height: 1; }
         .app-icon:active { transform: scale(0.92); background-color: var(--tag-bg); }
@@ -161,12 +161,12 @@
         .gc-bottom-text::before { content: ''; position: absolute; top: -6px; left: 28px; width: 12px; height: 12px; background: #ffffff; border-top: 1px solid #f0f0f0; border-left: 1px solid #f0f0f0; transform: rotate(45deg); }
         
         /* Page Indicators */
-        #page-indicators { position: absolute; bottom: calc(105px + env(safe-area-inset-bottom, 0px)); width: 100%; display: flex; justify-content: center; gap: 8px; z-index: 40; pointer-events: none; }
+        #page-indicators { position: absolute; bottom: calc(90px + env(safe-area-inset-bottom, 0px)); width: 100%; display: flex; justify-content: center; gap: 8px; z-index: 40; pointer-events: none; }
         .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--border-color); transition: 0.3s; }
         .dot.active { background: var(--black); }
         
         /* Dock */
-        #dock { position: absolute; bottom: calc(15px + env(safe-area-inset-bottom, 0px)); left: 16px; right: 16px; height: 80px; border-radius: var(--radius-lg); display: flex; justify-content: space-around; align-items: center; padding: 0 12px; z-index: 50; border: 0.5px solid rgba(0,0,0,0.05); }
+        #dock { position: absolute; bottom: calc(4px + env(safe-area-inset-bottom, 0px)); left: 16px; right: 16px; height: 80px; border-radius: var(--radius-lg); display: flex; justify-content: space-around; align-items: center; padding: 0 12px; z-index: 50; border: 0.5px solid rgba(0,0,0,0.05); }
         
         /* App Windows */
         .app-window { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 200; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
@@ -406,7 +406,7 @@
 
                 <!-- Page 2: More Apps -->
                 <div class="desktop-page" id="page-2">
-                    <div style="height: 10px; transition: height 0.3s ease;" id="page-2-top-padding"></div> <!-- Padding for status bar -->
+                    <div style="height: 44px; transition: height 0.3s ease;" id="page-2-top-padding"></div> <!-- Padding for status bar -->
                     
                     <div class="girly-card">
                         <div class="gc-notebook-rings">
