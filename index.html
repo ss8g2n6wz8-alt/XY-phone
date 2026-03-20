@@ -31,9 +31,10 @@
         }
         
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
-        body { background-color: #000; display: flex; justify-content: center; align-items: center; height: 100vh; height: 100dvh; overflow: hidden; color: var(--text-color); }
+        html, body { height: 100%; width: 100%; margin: 0; padding: 0; overflow: hidden; }
+        body { background-color: var(--bg-color); display: flex; justify-content: center; align-items: center; color: var(--text-color); }
         
-        #app-container { width: 100%; height: 100%; max-width: 430px; background: var(--bg-color); position: relative; overflow: hidden; box-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        #app-container { width: 100%; height: 100%; max-width: 430px; background: var(--bg-color); position: relative; overflow: hidden; box-shadow: 0 0 20px rgba(255,255,255,0.1); padding-top: env(safe-area-inset-top); padding-bottom: env(safe-area-inset-bottom); }
         
         /* Utility */
         .hidden { display: none !important; }
@@ -52,10 +53,10 @@
         .btn-outline { background: transparent; border: 1px solid var(--border-color); color: var(--black); }
         
         /* Status Bar */
-        #status-bar { height: 44px; display: flex; justify-content: space-between; align-items: center; padding: 0 24px; font-size: 14px; font-weight: 600; position: absolute; top: 0; width: 100%; z-index: 100; color: var(--text-color); pointer-events: none; }
+        #status-bar { height: calc(44px + env(safe-area-inset-top)); padding-top: env(safe-area-inset-top); display: flex; justify-content: space-between; align-items: center; padding-left: 24px; padding-right: 24px; font-size: 14px; font-weight: 600; position: absolute; top: 0; width: 100%; z-index: 100; color: var(--text-color); pointer-events: none; }
         
         /* Desktop Wrapper for Swiping */
-        #desktop-wrapper { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; width: 100%; height: 100%; scroll-behavior: smooth; scrollbar-width: none; -webkit-overflow-scrolling: touch; }
+        #desktop-wrapper { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; width: 100%; height: 100%; scroll-behavior: smooth; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding-top: env(safe-area-inset-top); }
         #desktop-wrapper::-webkit-scrollbar { display: none; }
         
         .desktop-page { flex: 0 0 100%; width: 100%; height: 100%; scroll-snap-align: start; overflow-y: auto; padding-bottom: 110px; position: relative; }
@@ -178,7 +179,7 @@
         body.edit-mode .editable, body.edit-mode .editable-img { outline: 2px dashed #999; outline-offset: 2px; cursor: pointer; position: relative; }
         body.edit-mode .editable::after, body.edit-mode .editable-img::after { content: '编辑'; position: absolute; top: -10px; right: -10px; background: var(--black); color: var(--white); font-size: 10px; padding: 2px 4px; border-radius: 4px; z-index: 20; }
         
-        #edit-bg-btn { position: absolute; top: 60px; left: 50%; transform: translateX(-50%); z-index: 1000; background: var(--black); color: var(--white); padding: 10px 20px; border-radius: 20px; font-size: 15px; display: none; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-weight: 500; white-space: nowrap; }
+        #edit-bg-btn { position: absolute; top: calc(60px + env(safe-area-inset-top)); left: 50%; transform: translateX(-50%); z-index: 1000; background: var(--black); color: var(--white); padding: 10px 20px; border-radius: 20px; font-size: 15px; display: none; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.2); font-weight: 500; white-space: nowrap; }
         body.edit-mode #edit-bg-btn { display: block; }
         
         .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 1000; display: flex; justify-content: center; align-items: flex-end; opacity: 0; pointer-events: none; transition: opacity 0.3s; }
