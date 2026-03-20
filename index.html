@@ -66,16 +66,16 @@
         /* Standalone (PWA) Mode Overrides */
         @media (display-mode: standalone) {
             /* 整体放大，解决全屏状态下感觉小小的、空空的问题 */
-            .profile-card { margin-top: -11px !important; transform: scale(1.02) !important; margin-bottom: 16px !important; }
+            .profile-card { margin-top: 20px !important; transform: scale(1.02) !important; margin-bottom: 16px !important; }
             .tw-card { transform: scale(1.02) !important; margin-bottom: 16px !important; margin-top: 5px !important; }
             .row-3 { transform: scale(1.02) !important; margin-bottom: 16px !important; margin-top: 5px !important; }
-            .girly-card { transform: scale(0.92) !important; margin-top: -23px !important; }
+            .girly-card { transform: scale(0.92) !important; margin-top: 0px !important; }
             
             #page-2-top-padding { height: 4px !important; }
             
             /* 那个区域的四个App (Dock) 调整 */
             #dock { 
-                bottom: 0px !important;
+                bottom: 8px !important;
                 height: 90px !important;
             }
             #dock .app-icon { width: 48px !important; height: 48px !important; font-size: 18px !important; border-radius: 14px !important; }
@@ -161,7 +161,7 @@
         .app-label { margin-top: 6px; font-size: 12px; color: var(--text-color); font-weight: 400; }
         
         /* Girly Component */
-        .girly-card { background: #fdfdfd; border-radius: 24px; padding: 6px 6px 12px 6px; margin: 16px 24px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03), inset 0 0 10px rgba(255,255,255,0.5); border: 1px solid #f0f0f0; position: relative; transform: scale(0.92); transform-origin: top center; }
+        .girly-card { background: #fdfdfd; border-radius: 24px; padding: 6px 6px 12px 6px; margin: 32px 24px 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.03), inset 0 0 10px rgba(255,255,255,0.5); border: 1px solid #f0f0f0; position: relative; transform: scale(0.92); transform-origin: top center; }
         .girly-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: radial-gradient(#e8e8e8 1px, transparent 1px); background-size: 12px 12px; opacity: 0.6; pointer-events: none; z-index: 0; border-radius: 24px; overflow: hidden; }
         .gc-notebook-rings { position: absolute; top: -14px; left: 0; right: 0; height: 20px; display: flex; justify-content: space-evenly; padding: 0 16px; z-index: 2; pointer-events: none; }
         .gc-ring { width: 5px; height: 20px; background: linear-gradient(to bottom, #d0d0d0, #f0f0f0, #c0c0c0); border-radius: 3px; box-shadow: 1px 1px 2px rgba(0,0,0,0.2), inset -1px -1px 2px rgba(0,0,0,0.1); position: relative; }
@@ -193,7 +193,7 @@
         .dot.active { background: var(--black); }
         
         /* Dock */
-        #dock { position: absolute; bottom: 0px; left: 16px; right: 16px; height: 80px; border-radius: var(--radius-lg); display: flex; justify-content: space-around; align-items: center; padding: 0 12px; z-index: 50; border: 0.5px solid rgba(0,0,0,0.05); }
+        #dock { position: absolute; bottom: 8px; left: 16px; right: 16px; height: 80px; border-radius: var(--radius-lg); display: flex; justify-content: space-around; align-items: center; padding: 0 12px; z-index: 50; border: 0.5px solid rgba(0,0,0,0.05); }
         
         /* App Windows */
         .app-window { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 200; display: flex; flex-direction: column; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); }
